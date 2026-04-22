@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CourseSphere | Science Dimension</title>
+<link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo+2:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --sci-violet: #bc13fe; 
+            --sci-white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.03); 
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background: #000; color: white; font-family: 'Exo 2'; 
+            padding: 100px 8% 60px; overflow-x: hidden;
+        }
+        
+        .bg { 
+            position: fixed; top:0; left:0; width:100%; height:100%; 
+            background: url('final.jpeg') center/cover; opacity: 0.1; 
+            z-index: -1; filter: saturate(0) brightness(1.5) hue-rotate(240deg); 
+        }
+
+        /* --- NAVIGATION --- */
+        .back-nav {
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            z-index: 10001;
+        }
+
+        .btn-back {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--sci-violet);
+            color: var(--sci-violet);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 10px;
+            letter-spacing: 2px;
+            border-radius: 50px;
+            transition: 0.4s;
+            backdrop-filter: blur(10px);
+            text-transform: uppercase;
+        }
+
+        .btn-back:hover {
+            background: var(--sci-violet);
+            color: black;
+            box-shadow: 0 0 25px var(--sci-violet);
+            transform: scale(1.05);
+        }
+
+        header { text-align: center; margin-bottom: 60px; }
+        header h1 { 
+            font-family: 'Orbitron'; font-size: 3rem; 
+            color: var(--sci-white); text-shadow: 0 0 20px var(--sci-violet); 
+            letter-spacing: 10px; 
+        }
+
+        .subsection-title { 
+            font-family: 'Orbitron'; font-size: 1.4rem; 
+            margin: 80px 0 30px; padding-left: 15px; 
+            border-left: 4px solid var(--sci-violet); 
+            letter-spacing: 2px; 
+        }
+
+        .courses-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+
+        .card {
+            background: var(--glass); border: 1px solid rgba(188, 19, 254, 0.2); 
+            border-radius: 20px; padding: 25px; backdrop-filter: blur(15px); 
+            transition: 0.4s; cursor: pointer; min-height: 180px; 
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .card:hover { 
+            transform: translateY(-10px); border-color: var(--sci-violet); 
+            box-shadow: 0 10px 30px rgba(188, 19, 254, 0.3); 
+        }
+
+        .card h3 { font-family: 'Orbitron'; font-size: 1.1rem; color: #fff; margin-bottom: 8px; }
+        .card p { font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); line-height: 1.5; }
+
+        .sci-bar { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-top: 15px; }
+        .sci-fill { height: 100%; background: var(--sci-violet); box-shadow: 0 0 10px var(--sci-violet); border-radius: 10px; }
+
+        /* --- THE FLOATING LAB-SCANNER --- */
+        #course-popup {
+            position: absolute; width: 260px; padding: 20px;
+            background: rgba(10, 0, 15, 0.95); border: 2px solid var(--sci-violet);
+            border-radius: 15px; color: white; font-family: 'Orbitron';
+            font-size: 10px; pointer-events: none; opacity: 0;
+            transform: translateY(20px); transition: opacity 0.3s, transform 0.3s;
+            z-index: 9999; backdrop-filter: blur(15px);
+            box-shadow: 0 0 30px rgba(188, 19, 254, 0.4);
+        }
+        .term-line { margin-bottom: 6px; border-left: 2px solid var(--sci-violet); padding-left: 10px; }
+
+        footer { text-align: center; margin-top: 100px; opacity: 0.4; font-family: 'Orbitron'; font-size: 10px; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    
+    <div class="back-nav">
+        <a href="index.html" class="btn-back">« Return to Hub</a>
+    </div>
+
+    <div id="course-popup"></div>
+
+    <header><h1>SCIENCE SECTOR</h1></header>
+
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CourseSphere | Science Dimension</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo+2:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --sci-violet: #bc13fe; 
+            --sci-white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.03); 
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            background: #000; color: white; font-family: 'Exo 2'; 
+            padding: 100px 5% 60px; overflow-x: hidden;
+        }
+        
+        .bg { 
+            position: fixed; top:0; left:0; width:100%; height:100%; 
+            background: url('final.jpeg') center/cover; opacity: 0.1; 
+            z-index: -1; filter: saturate(0) brightness(1.5) hue-rotate(240deg); 
+        }
+
+        /* --- NAVIGATION --- */
+        .back-nav { position: fixed; top: 20px; left: 20px; z-index: 10001; }
+        .btn-back {
+            display: flex; align-items: center; padding: 10px 18px;
+            background: rgba(0, 0, 0, 0.8); border: 1px solid var(--sci-violet);
+            color: var(--sci-violet); text-decoration: none; font-family: 'Orbitron';
+            font-size: 10px; letter-spacing: 2px; border-radius: 50px;
+            transition: 0.4s; backdrop-filter: blur(10px);
+        }
+        .btn-back:hover { background: var(--sci-violet); color: #000; box-shadow: 0 0 20px var(--sci-violet); }
+
+        header { text-align: center; margin-bottom: 50px; }
+        header h1 { 
+            font-family: 'Orbitron'; 
+            font-size: clamp(1.5rem, 7vw, 3rem); 
+            color: var(--sci-white); text-shadow: 0 0 20px var(--sci-violet); 
+            letter-spacing: 8px; 
+        }
+
+        .subsection-title { 
+            font-family: 'Orbitron'; font-size: clamp(0.9rem, 4vw, 1.3rem); 
+            margin: 50px 0 25px; padding-left: 15px; 
+            border-left: 4px solid var(--sci-violet); color: var(--sci-violet);
+        }
+
+        /* --- RESPONSIVE GRID --- */
+        .courses-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 20px; 
+        }
+
+        .card {
+            background: var(--glass); border: 1px solid rgba(188, 19, 254, 0.2); 
+            border-radius: 20px; padding: 25px; backdrop-filter: blur(15px); 
+            transition: 0.3s; cursor: pointer; min-height: 180px; 
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .card:hover { border-color: var(--sci-violet); transform: translateY(-5px); }
+
+        .card h3 { font-family: 'Orbitron'; font-size: 1.1rem; color: #fff; margin-bottom: 8px; }
+        .card p { font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); line-height: 1.5; }
+
+        .sci-bar { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-top: 15px; }
+        .sci-fill { height: 100%; background: var(--sci-violet); box-shadow: 0 0 10px var(--sci-violet); border-radius: 10px; }
+
+        /* --- THE FLOATING LAB-SCANNER --- */
+        #course-popup {
+            position: absolute; width: 280px; padding: 20px;
+            background: rgba(10, 0, 15, 0.98); border: 2px solid var(--sci-violet);
+            border-radius: 15px; color: white; font-family: 'Orbitron';
+            font-size: 10px; pointer-events: none; opacity: 0;
+            transform: translateY(20px); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 9999; backdrop-filter: blur(20px);
+            box-shadow: 0 0 40px rgba(188, 19, 254, 0.5);
+        }
+        .term-line { margin-bottom: 6px; border-left: 2px solid var(--sci-violet); padding-left: 10px; }
+
+        /* --- MOBILE OVERRIDES --- */
+        @media (max-width: 768px) {
+            body { padding: 90px 4% 120px; }
+            #course-popup {
+                position: fixed; bottom: 20px; left: 5% !important; right: 5% !important;
+                top: auto !important; width: 90%; transform: translateY(150px);
+            }
+            .card:active { transform: scale(0.97); background: rgba(188, 19, 254, 0.1); }
+        }
+
+        footer { text-align: center; margin-top: 80px; opacity: 0.3; font-family: 'Orbitron'; font-size: 9px; }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="back-nav"><a href="index.html" class="btn-back">« HUB</a></div>
+    <div id="course-popup"></div>
+
+    <h1>SCIENCE SECTOR</h1>
+
+    <h3 class="subsection-title">1. Core Science Degrees</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$65k" data-diff="60%" data-pot="High"><h3>B.Sc</h3><p>General Science</p><div class="sci-bar"><div class="sci-fill" style="width: 60%;"></div></div></div>
+        <div class="card" data-pay="$75k" data-diff="75%" data-pot="High"><h3>B.Sc Honours</h3><p>Subject Specialization</p><div class="sci-bar"><div class="sci-fill" style="width: 75%;"></div></div></div>
+        <div class="card" data-pay="$85k" data-diff="82%" data-pot="Extreme"><h3>Integrated MSc</h3><p>UG + PG Combined</p><div class="sci-bar"><div class="sci-fill" style="width: 82%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">2. Physical Sciences</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$95k" data-diff="90%" data-pot="Extreme"><h3>Physics</h3><p>Energy & Matter</p><div class="sci-bar"><div class="sci-fill" style="width: 90%;"></div></div></div>
+        <div class="card" data-pay="$88k" data-diff="85%" data-pot="High"><h3>Chemistry</h3><p>Chemical Reactions</p><div class="sci-bar"><div class="sci-fill" style="width: 85%;"></div></div></div>
+        <div class="card" data-pay="$105k" data-diff="98%" data-pot="Critical"><h3>Mathematics</h3><p>Numbers & Logic</p><div class="sci-bar"><div class="sci-fill" style="width: 98%;"></div></div></div>
+        <div class="card" data-pay="$110k" data-diff="88%" data-pot="High"><h3>Statistics</h3><p>Data Analysis</p><div class="sci-bar"><div class="sci-fill" style="width: 88%;"></div></div></div>
+        <div class="card" data-pay="$115k" data-diff="94%" data-pot="Extreme"><h3>Astronomy</h3><p>Space Study</p><div class="sci-bar"><div class="sci-fill" style="width: 94%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">3. Life Sciences</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$82k" data-diff="78%" data-pot="High"><h3>Biology</h3><p>Living Organisms</p><div class="sci-bar"><div class="sci-fill" style="width: 78%;"></div></div></div>
+        <div class="card" data-pay="$74k" data-diff="70%" data-pot="Medium"><h3>Botany</h3><p>Plant Science</p><div class="sci-bar"><div class="sci-fill" style="width: 70%;"></div></div></div>
+        <div class="card" data-pay="$76k" data-diff="72%" data-pot="Medium"><h3>Zoology</h3><p>Animal Science</p><div class="sci-bar"><div class="sci-fill" style="width: 72%;"></div></div></div>
+        <div class="card" data-pay="$92k" data-diff="85%" data-pot="High"><h3>Microbiology</h3><p>Microorganisms</p><div class="sci-bar"><div class="sci-fill" style="width: 85%;"></div></div></div>
+        <div class="card" data-pay="$130k" data-diff="92%" data-pot="Critical"><h3>Genetics</h3><p>DNA & Heredity</p><div class="sci-bar"><div class="sci-fill" style="width: 92%;"></div></div></div>
+        <div class="card" data-pay="$100k" data-diff="88%" data-pot="High"><h3>Biochemistry</h3><p>Chemistry of Life</p><div class="sci-bar"><div class="sci-fill" style="width: 88%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">4. Earth & Environmental Sciences</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$88k" data-diff="76%" data-pot="Medium"><h3>Geology</h3><p>Earth Structure</p><div class="sci-bar"><div class="sci-fill" style="width: 76%;"></div></div></div>
+        <div class="card" data-pay="$80k" data-diff="72%" data-pot="High"><h3>Environmental Science</h3><p>Nature & Sustainability</p><div class="sci-bar"><div class="sci-fill" style="width: 72%;"></div></div></div>
+        <div class="card" data-pay="$85k" data-diff="78%" data-pot="Medium"><h3>Meteorology</h3><p>Weather Study</p><div class="sci-bar"><div class="sci-fill" style="width: 78%;"></div></div></div>
+        <div class="card" data-pay="$94k" data-diff="82%" data-pot="High"><h3>Oceanography</h3><p>Ocean Science</p><div class="sci-bar"><div class="sci-fill" style="width: 82%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">5. Applied Sciences</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$110k" data-diff="86%" data-pot="Extreme"><h3>Biotechnology</h3><p>Bio + Tech</p><div class="sci-bar"><div class="sci-fill" style="width: 86%;"></div></div></div>
+        <div class="card" data-pay="$88k" data-diff="80%" data-pot="High"><h3>Forensic Science</h3><p>Crime Investigation</p><div class="sci-bar"><div class="sci-fill" style="width: 80%;"></div></div></div>
+        <div class="card" data-pay="$82k" data-diff="74%" data-pot="Medium"><h3>Food Technology</h3><p>Food Processing</p><div class="sci-bar"><div class="sci-fill" style="width: 74%;"></div></div></div>
+        <div class="card" data-pay="$70k" data-diff="68%" data-pot="Medium"><h3>Agricultural Science</h3><p>Farming & Crops</p><div class="sci-bar"><div class="sci-fill" style="width: 68%;"></div></div></div>
+        <div class="card" data-pay="$72k" data-diff="65%" data-pot="Medium"><h3>Dairy Technology</h3><p>Milk Production</p><div class="sci-bar"><div class="sci-fill" style="width: 65%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">6. Computer & Data Science</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$120k" data-diff="90%" data-pot="High"><h3>Computer Science</h3><p>Programming</p><div class="sci-bar"><div class="sci-fill" style="width: 90%;"></div></div></div>
+        <div class="card" data-pay="$140k" data-diff="94%" data-pot="Extreme"><h3>Data Science</h3><p>Big Data Analysis</p><div class="sci-bar"><div class="sci-fill" style="width: 94%;"></div></div></div>
+        <div class="card" data-pay="$150k" data-diff="98%" data-pot="Critical"><h3>Artificial Intelligence</h3><p>Smart Systems</p><div class="sci-bar"><div class="sci-fill" style="width: 98%;"></div></div></div>
+        <div class="card" data-pay="$135k" data-diff="96%" data-pot="Extreme"><h3>Machine Learning</h3><p>Algorithms</p><div class="sci-bar"><div class="sci-fill" style="width: 96%;"></div></div></div>
+        <div class="card" data-pay="$125k" data-diff="92%" data-pot="High"><h3>Cybersecurity</h3><p>Security Systems</p><div class="sci-bar"><div class="sci-fill" style="width: 92%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">7. Research & Higher Studies</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$90k" data-diff="85%" data-pot="High"><h3>M.Sc</h3><p>Master Degree</p><div class="sci-bar"><div class="sci-fill" style="width: 85%;"></div></div></div>
+        <div class="card" data-pay="$110k" data-diff="98%" data-pot="Critical"><h3>PhD</h3><p>Research Career</p><div class="sci-bar"><div class="sci-fill" style="width: 98%;"></div></div></div>
+        <div class="card" data-pay="$160k" data-diff="99%" data-pot="Extreme"><h3>Research Scientist</h3><p>Innovation & Discovery</p><div class="sci-bar"><div class="sci-fill" style="width: 99%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">8. Emerging Fields</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$130k" data-diff="95%" data-pot="Extreme"><h3>Nanotechnology</h3><p>Nano Materials</p><div class="sci-bar"><div class="sci-fill" style="width: 95%;"></div></div></div>
+        <div class="card" data-pay="$145k" data-diff="96%" data-pot="Extreme"><h3>Space Science</h3><p>Space Research</p><div class="sci-bar"><div class="sci-fill" style="width: 96%;"></div></div></div>
+        <div class="card" data-pay="$120k" data-diff="92%" data-pot="High"><h3>Robotics Science</h3><p>Automation</p><div class="sci-bar"><div class="sci-fill" style="width: 92%;"></div></div></div>
+        <div class="card" data-pay="$115k" data-diff="88%" data-pot="High"><h3>Renewable Energy</h3><p>Green Energy</p><div class="sci-bar"><div class="sci-fill" style="width: 88%;"></div></div></div>
+        <div class="card" data-pay="$180k" data-diff="100%" data-pot="Critical"><h3>Quantum Science</h3><p>Advanced Physics</p><div class="sci-bar"><div class="sci-fill" style="width: 100%;"></div></div></div>
+    </div>
+
+    <footer><p>© 2026 COURSESPHERE // SCIENCE DIMENSION // </p></footer>
+
+    <script>
+        const cards = document.querySelectorAll('.card');
+        const popup = document.getElementById('course-popup');
+
+        const updatePopup = (card) => {
+            const title = card.querySelector('h3').innerText;
+            const pay = card.getAttribute('data-pay');
+            const diff = card.getAttribute('data-diff');
+            const pot = card.getAttribute('data-pot');
+
+            popup.innerHTML = `
+                <div class="term-line" style="color:#fff;">> LAB-SCAN: ${title.toUpperCase()}</div>
+                <div class="term-line">> DISCOVERY_POT: ${pot}</div>
+                <div class="term-line">> EST_STIPEND: ${pay}</div>
+                <div class="term-line">> RESEARCH_LOAD: ${diff}</div>
+                <div class="term-line">> STATUS: HYPOTHESIS_OK</div>
+            `;
+
+            if (window.innerWidth > 768) {
+                const rect = card.getBoundingClientRect();
+                popup.style.left = (rect.left + window.scrollX + (rect.width / 2) - 140) + "px";
+                popup.style.top = (rect.top + window.scrollY - 180) + "px";
+                popup.style.transform = "translateY(0px)";
+            } else {
+                popup.style.transform = "translateY(0px)";
+            }
+            popup.style.opacity = "1";
+        };
+
+        const hidePopup = () => {
+            if (window.innerWidth > 768) {
+                popup.style.opacity = "0";
+                popup.style.transform = "translateY(20px)";
+            }
+        };
+
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => updatePopup(card));
+            card.addEventListener('mouseleave', hidePopup);
+            card.addEventListener('click', (e) => {
+                e.stopPropagation();
+                updatePopup(card);
+            });
+        });
+
+        document.addEventListener('click', () => {
+            popup.style.opacity = "0";
+            if(window.innerWidth <= 768) popup.style.transform = "translateY(150px)";
+        });
+    </script>
+<script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+            .then(() => console.log("Science Dimension: App Mode Active"))
+            .catch((err) => console.log("Sync Error", err));
+        }
+    </script>
+</body>
+</html>
+</body>
+</html>

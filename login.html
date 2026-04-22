@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CourseSphere | Secure Authentication</title>
+<link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo+2:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-blue: #00cfff;
+            --error-red: #ff3131;
+            --success-green: #00ff88;
+            --glass: rgba(255, 255, 255, 0.03);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            background: #000;
+            color: white;
+            font-family: 'Exo 2', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .bg-glow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(0, 207, 255, 0.08) 0%, transparent 70%);
+            z-index: -1;
+        }
+
+        .login-container {
+            background: var(--glass);
+            padding: clamp(30px, 8vw, 50px);
+            border-radius: 30px;
+            border: 1px solid rgba(0, 207, 255, 0.2);
+            backdrop-filter: blur(25px);
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            position: relative;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+            transition: 0.3s;
+        }
+
+        #scanner {
+            width: 100%; height: 3px; background: var(--neon-blue);
+            position: absolute; left: 0; top: 0;
+            box-shadow: 0 0 20px var(--neon-blue); opacity: 0; z-index: 10;
+        }
+
+        @keyframes scanning { 0% { top: 0%; opacity: 1; } 50% { top: 100%; opacity: 1; } 100% { top: 0%; opacity: 1; } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+
+        h1 { font-family: 'Orbitron'; font-size: clamp(1.2rem, 5vw, 1.6rem); letter-spacing: 4px; margin-bottom: 25px; color: var(--neon-blue); text-shadow: 0 0 15px var(--neon-blue); }
+
+        .input-group { margin-bottom: 15px; text-align: left; }
+        label { font-size: 9px; font-family: 'Orbitron'; letter-spacing: 2px; margin-bottom: 8px; display: block; opacity: 0.6; color: var(--neon-blue); }
+        
+        input {
+            width: 100%; background: rgba(0, 0, 0, 0.6); border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px; color: white; border-radius: 10px; outline: none;
+            transition: 0.3s; font-family: 'Exo 2'; font-size: 14px;
+        }
+
+        input:focus { border-color: var(--neon-blue); box-shadow: 0 0 15px rgba(0, 207, 255, 0.1); }
+
+        .btn-auth {
+            width: 100%; padding: 16px; background: transparent; border: 1px solid var(--neon-blue);
+            color: var(--neon-blue); font-family: 'Orbitron'; cursor: pointer; border-radius: 12px;
+            transition: 0.4s; margin-top: 10px; letter-spacing: 3px; text-transform: uppercase; font-size: 11px;
+        }
+
+        .btn-auth:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 30px var(--neon-blue); }
+
+        #status-msg { margin-top: 20px; font-size: 10px; font-family: 'Orbitron'; letter-spacing: 1px; color: rgba(255, 255, 255, 0.4); text-transform: uppercase; }
+        .success-text { color: var(--success-green) !important; text-shadow: 0 0 10px var(--success-green); }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+
+    <div class="login-container" id="loginBox">
+        <div id="scanner"></div>
+        <h1>CORE ACCESS</h1>
+
+        <div class="input-group">
+            <label>IDENTIFICATION NAME (MIN 3)</label>
+            <input type="text" id="username" placeholder="NAME..." autocomplete="off">
+        </div>
+
+        <div class="input-group">
+            <label>NEURAL EMAIL (REQUIRED)</label>
+            <input type="email" id="email" placeholder="EMAIL@DOMAIN.COM" autocomplete="off">
+        </div>
+
+        <div class="input-group">
+            <label>ENCRYPTION KEY (6+ CHARS, NUM & SPEC)</label>
+            <input type="password" id="password" placeholder="••••••••">
+        </div>
+
+        <button class="btn-auth" id="loginBtn" onclick="startVerification()">Initiate Sync</button>
+        <div id="status-msg">System Awaiting Credentials...</div>
+    </div>
+
+    <script>
+        function startVerification() {
+            const user = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
+            const status = document.getElementById('status-msg');
+            const loginBox = document.getElementById('loginBox');
+            const scanner = document.getElementById('scanner');
+
+            // Regex for Email, Numbers, and Special Characters
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            const specialCharPattern = /[!@#$%^&*(),.?":{}|<>]/;
+            const numberPattern = /[0-9]/;
+
+            // 1. Validation Logic
+            let error = "";
+            if (user.length < 3) error = "NAME TOO SHORT (MIN 3)";
+            else if (!emailPattern.test(email)) error = "INVALID NEURAL EMAIL";
+            else if (pass.length < 6) error = "KEY TOO SHORT (MIN 6)";
+            else if (!numberPattern.test(pass) || !specialCharPattern.test(pass)) error = "KEY NEEDS NUM & SPEC CHAR";
+
+            if (error !== "") {
+                status.innerText = "ACCESS DENIED: " + error;
+                status.style.color = "var(--error-red)";
+                loginBox.style.animation = "shake 0.4s ease";
+                loginBox.style.borderColor = "var(--error-red)";
+                setTimeout(() => { loginBox.style.animation = "none"; loginBox.style.borderColor = "rgba(0, 207, 255, 0.2)"; }, 400);
+                return;
+            }
+
+            // 2. Success Logic
+            localStorage.setItem('cs_username', user);
+            status.innerText = "Synchronizing Neural Profile...";
+            status.style.color = "var(--neon-blue)";
+            scanner.style.animation = "scanning 1.5s ease-in-out infinite";
+            document.getElementById('loginBtn').style.opacity = "0.4";
+            document.getElementById('loginBtn').style.pointerEvents = "none";
+
+            setTimeout(() => {
+                scanner.style.animation = "none";
+                scanner.style.opacity = "0";
+                status.classList.add('success-text');
+                status.innerText = "Access Granted. Welcome, " + user.toUpperCase();
+                setTimeout(() => { window.location.href = "index.html"; }, 1500);
+            }, 3000);
+        }
+    </script>
+<script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+            .then(() => console.log("Science Dimension: App Mode Active"))
+            .catch((err) => console.log("Sync Error", err));
+        }
+    </script>
+</body>
+</html>
+</body>
+</html>

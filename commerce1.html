@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CourseSphere | Commerce Dimension</title>
+<link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo+2:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --market-gold: #ffcc00; 
+            --glass: rgba(255, 255, 255, 0.03); 
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background: #000; color: white; font-family: 'Exo 2'; 
+            padding: 100px 8% 60px; overflow-x: hidden;
+        }
+        
+        .bg { 
+            position: fixed; top:0; left:0; width:100%; height:100%; 
+            background: url('final.jpeg') center/cover; opacity: 0.1; 
+            z-index: -1; filter: sepia(1) saturate(2) hue-rotate(-15deg); 
+        }
+
+        /* --- NAVIGATION --- */
+        .back-nav {
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            z-index: 10001;
+        }
+
+        .btn-back {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--market-gold);
+            color: var(--market-gold);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 10px;
+            letter-spacing: 2px;
+            border-radius: 50px;
+            transition: 0.4s;
+            backdrop-filter: blur(10px);
+            text-transform: uppercase;
+        }
+
+        .btn-back:hover {
+            background: var(--market-gold);
+            color: black;
+            box-shadow: 0 0 25px var(--market-gold);
+            transform: scale(1.05);
+        }
+
+        header { text-align: center; margin-bottom: 60px; }
+        header h1 { 
+            font-family: 'Orbitron'; font-size: 3rem; 
+            color: var(--market-gold); text-shadow: 0 0 20px var(--market-gold); 
+            letter-spacing: 10px; 
+        }
+
+        .subsection-title { 
+            font-family: 'Orbitron'; font-size: 1.4rem; 
+            margin: 80px 0 30px; padding-left: 15px; 
+            border-left: 4px solid var(--market-gold); 
+            letter-spacing: 2px; 
+        }
+
+        .courses-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+
+        .card {
+            background: var(--glass); border: 1px solid rgba(255, 204, 0, 0.2); 
+            border-radius: 20px; padding: 25px; backdrop-filter: blur(15px); 
+            transition: 0.4s; cursor: pointer; min-height: 180px; 
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .card:hover { 
+            transform: translateY(-10px); border-color: var(--market-gold); 
+            box-shadow: 0 10px 30px rgba(255, 204, 0, 0.3); 
+        }
+
+        .card h3 { font-family: 'Orbitron'; font-size: 1.1rem; color: #fff; margin-bottom: 8px; }
+        .card p { font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); line-height: 1.5; }
+
+        .market-bar { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-top: 15px; }
+        .market-fill { height: 100%; background: var(--market-gold); box-shadow: 0 0 10px var(--market-gold); border-radius: 10px; }
+
+        /* --- THE FLOATING ANALYZER --- */
+        #course-popup {
+            position: absolute; width: 260px; padding: 20px;
+            background: rgba(15, 10, 0, 0.95); border: 2px solid var(--market-gold);
+            border-radius: 15px; color: white; font-family: 'Orbitron';
+            font-size: 10px; pointer-events: none; opacity: 0;
+            transform: translateY(20px); transition: opacity 0.3s, transform 0.3s;
+            z-index: 9999; backdrop-filter: blur(15px);
+            box-shadow: 0 0 30px rgba(255, 204, 0, 0.4);
+        }
+        .term-line { margin-bottom: 6px; border-left: 2px solid var(--market-gold); padding-left: 10px; }
+
+        footer { text-align: center; margin-top: 100px; opacity: 0.4; font-family: 'Orbitron'; font-size: 10px; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    
+    <div class="back-nav">
+        <a href="index.html" class="btn-back">« Return to Hub</a>
+    </div>
+
+    <div id="course-popup"></div>
+
+    <header><h1>COMMERCE SECTOR</h1></header>
+
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CourseSphere | Commerce Dimension</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo+2:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --market-gold: #ffcc00; 
+            --glass: rgba(255, 255, 255, 0.03); 
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            background: #000; color: white; font-family: 'Exo 2'; 
+            padding: 100px 5% 60px; overflow-x: hidden;
+        }
+        
+        .bg { 
+            position: fixed; top:0; left:0; width:100%; height:100%; 
+            background: url('final.jpeg') center/cover; opacity: 0.1; 
+            z-index: -1; filter: sepia(1) saturate(2) hue-rotate(-15deg); 
+        }
+
+        /* --- NAVIGATION --- */
+        .back-nav { position: fixed; top: 20px; left: 20px; z-index: 10001; }
+        .btn-back {
+            display: flex; align-items: center; padding: 10px 18px;
+            background: rgba(0, 0, 0, 0.8); border: 1px solid var(--market-gold);
+            color: var(--market-gold); text-decoration: none; font-family: 'Orbitron';
+            font-size: 10px; letter-spacing: 2px; border-radius: 50px;
+            transition: 0.4s; backdrop-filter: blur(10px);
+        }
+        .btn-back:hover { background: var(--market-gold); color: #000; box-shadow: 0 0 20px var(--market-gold); }
+
+        header { text-align: center; margin-bottom: 50px; }
+        header h1 { 
+            font-family: 'Orbitron'; 
+            font-size: clamp(1.5rem, 7vw, 3rem); 
+            color: var(--market-gold); text-shadow: 0 0 20px var(--market-gold); 
+            letter-spacing: 5px; 
+        }
+
+        .subsection-title { 
+            font-family: 'Orbitron'; font-size: clamp(0.9rem, 4vw, 1.3rem); 
+            margin: 50px 0 25px; padding-left: 15px; 
+            border-left: 4px solid var(--market-gold); color: var(--market-gold);
+        }
+
+        /* --- RESPONSIVE GRID --- */
+        .courses-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 20px; 
+        }
+
+        .card {
+            background: var(--glass); border: 1px solid rgba(255, 204, 0, 0.2); 
+            border-radius: 20px; padding: 25px; backdrop-filter: blur(15px); 
+            transition: 0.3s; cursor: pointer; min-height: 180px; 
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .card:hover { border-color: var(--market-gold); transform: translateY(-5px); }
+
+        .card h3 { font-family: 'Orbitron'; font-size: 1.1rem; color: #fff; margin-bottom: 8px; }
+        .card p { font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); line-height: 1.5; }
+
+        .market-bar { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-top: 15px; }
+        .market-fill { height: 100%; background: var(--market-gold); box-shadow: 0 0 10px var(--market-gold); border-radius: 10px; }
+
+        /* --- THE MARKET-ANALYZER POPUP --- */
+        #course-popup {
+            position: absolute; width: 280px; padding: 20px;
+            background: rgba(15, 10, 0, 0.98); border: 2px solid var(--market-gold);
+            border-radius: 15px; color: white; font-family: 'Orbitron';
+            font-size: 10px; pointer-events: none; opacity: 0;
+            transform: translateY(20px); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 9999; backdrop-filter: blur(20px);
+            box-shadow: 0 0 40px rgba(255, 204, 0, 0.5);
+        }
+        .term-line { margin-bottom: 6px; border-left: 2px solid var(--market-gold); padding-left: 10px; }
+
+        /* --- MOBILE SPECIFIC FIXES --- */
+        @media (max-width: 768px) {
+            body { padding: 90px 4% 120px; }
+            #course-popup {
+                position: fixed; bottom: 20px; left: 5% !important; right: 5% !important;
+                top: auto !important; width: 90%; transform: translateY(150px);
+            }
+            .card:active { transform: scale(0.97); background: rgba(255, 204, 0, 0.1); }
+        }
+
+        footer { text-align: center; margin-top: 80px; opacity: 0.4; font-family: 'Orbitron'; font-size: 9px; }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="back-nav"><a href="index.html" class="btn-back">« HUB</a></div>
+    <div id="course-popup"></div>
+
+    <h1>COMMERCE SECTOR</h1>
+
+    <h3 class="subsection-title">1. Core Commerce Degrees</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$72k" data-diff="Low" data-roi="High"><h3>B.Com (General)</h3><p>Accounting, Finance, Business Studies</p><div class="market-bar"><div class="market-fill" style="width: 60%;"></div></div></div>
+        <div class="card" data-pay="$80k" data-diff="Medium" data-roi="High"><h3>B.Com A&F</h3><p>Financial Accounting, Taxation</p><div class="market-bar"><div class="market-fill" style="width: 68%;"></div></div></div>
+        <div class="card" data-pay="$85k" data-diff="Medium" data-roi="Extreme"><h3>B.Com B&I</h3><p>Banking Systems, Risk Management</p><div class="market-bar"><div class="market-fill" style="width: 72%;"></div></div></div>
+        <div class="card" data-pay="$78k" data-diff="Low" data-roi="Stable"><h3>B.Com CS</h3><p>Corporate Laws, Management</p><div class="market-bar"><div class="market-fill" style="width: 75%;"></div></div></div>
+        <div class="card" data-pay="$92k" data-diff="High" data-roi="Extreme"><h3>B.Com CA</h3><p>Commerce + IT Integration</p><div class="market-bar"><div class="market-fill" style="width: 80%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">2. Finance & Accounting</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$140k" data-diff="Extreme" data-roi="Supreme"><h3>CA</h3><p>Accounting, Auditing, Taxation</p><div class="market-bar"><div class="market-fill" style="width: 98%;"></div></div></div>
+        <div class="card" data-pay="$110k" data-diff="High" data-roi="High"><h3>CMA</h3><p>Costing, Financial Planning</p><div class="market-bar"><div class="market-fill" style="width: 90%;"></div></div></div>
+        <div class="card" data-pay="$105k" data-diff="Medium" data-roi="Stable"><h3>CS</h3><p>Governance, Legal Compliance</p><div class="market-bar"><div class="market-fill" style="width: 88%;"></div></div></div>
+        <div class="card" data-pay="$95k" data-diff="High" data-roi="High"><h3>BBA Finance</h3><p>Management, Investment Analysis</p><div class="market-bar"><div class="market-fill" style="width: 82%;"></div></div></div>
+        <div class="card" data-pay="$82k" data-diff="Medium" data-roi="Stable"><h3>B.Com Taxation</h3><p>Direct & Indirect Taxes</p><div class="market-bar"><div class="market-fill" style="width: 72%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">3. Business & Management</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$90k" data-diff="Medium" data-roi="High"><h3>BBA</h3><p>Management, Marketing, HR</p><div class="market-bar"><div class="market-fill" style="width: 70%;"></div></div></div>
+        <div class="card" data-pay="$88k" data-diff="Medium" data-roi="Stable"><h3>BBM</h3><p>Business Operations, Strategy</p><div class="market-bar"><div class="market-fill" style="width: 72%;"></div></div></div>
+        <div class="card" data-pay="$98k" data-diff="High" data-roi="High"><h3>BMS</h3><p>Leadership, Org Behavior</p><div class="market-bar"><div class="market-fill" style="width: 76%;"></div></div></div>
+        <div class="card" data-pay="$110k" data-diff="High" data-roi="Extreme"><h3>BBA Marketing</h3><p>Sales, Brand Management</p><div class="market-bar"><div class="market-fill" style="width: 80%;"></div></div></div>
+        <div class="card" data-pay="$85k" data-diff="Low" data-roi="Stable"><h3>BBA HR</h3><p>Recruitment, Training</p><div class="market-bar"><div class="market-fill" style="width: 68%;"></div></div></div>
+        <div class="card" data-pay="$95k" data-diff="Medium" data-roi="High"><h3>BBA Operations</h3><p>Production, Logistics</p><div class="market-bar"><div class="market-fill" style="width: 74%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">4. Entrepreneurship & Startups</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$130k" data-diff="Extreme" data-roi="Extreme"><h3>BBA Entrepreneurship</h3><p>Startup Development, Innovation</p><div class="market-bar"><div class="market-fill" style="width: 88%;"></div></div></div>
+        <div class="card" data-pay="$120k" data-diff="High" data-roi="High"><h3>Entrepreneurship</h3><p>Planning, Funding</p><div class="market-bar"><div class="market-fill" style="width: 85%;"></div></div></div>
+        <div class="card" data-pay="$92k" data-diff="Medium" data-roi="Stable"><h3>Family Business</h3><p>Managing Enterprises</p><div class="market-bar"><div class="market-fill" style="width: 72%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">5. Economics & Analytics</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$105k" data-diff="High" data-roi="High"><h3>BA Economics</h3><p>Micro & Macro Economics</p><div class="market-bar"><div class="market-fill" style="width: 86%;"></div></div></div>
+        <div class="card" data-pay="$115k" data-diff="High" data-roi="Extreme"><h3>BSc Economics</h3><p>Quantitative Economics</p><div class="market-bar"><div class="market-fill" style="width: 92%;"></div></div></div>
+        <div class="card" data-pay="$135k" data-diff="Extreme" data-roi="Extreme"><h3>Business Analytics</h3><p>Data-driven Decisions</p><div class="market-bar"><div class="market-fill" style="width: 94%;"></div></div></div>
+        <div class="card" data-pay="$128k" data-diff="High" data-roi="High"><h3>Financial Analytics</h3><p>Investment & Risk</p><div class="market-bar"><div class="market-fill" style="width: 90%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">6. Banking, Finance & Markets</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$94k" data-diff="Medium" data-roi="High"><h3>BBF</h3><p>Banking & Financial Markets</p><div class="market-bar"><div class="market-fill" style="width: 78%;"></div></div></div>
+        <div class="card" data-pay="$108k" data-diff="High" data-roi="High"><h3>B.Com Financial Markets</h3><p>Stock Market, Trading</p><div class="market-bar"><div class="market-fill" style="width: 82%;"></div></div></div>
+        <div class="card" data-pay="$155k" data-diff="Extreme" data-roi="Supreme"><h3>Actuarial Science</h3><p>Risk, Insurance Math</p><div class="market-bar"><div class="market-fill" style="width: 96%;"></div></div></div>
+        <div class="card" data-pay="$170k" data-diff="Extreme" data-roi="Supreme"><h3>Investment Banking</h3><p>Corporate Finance, Mergers</p><div class="market-bar"><div class="market-fill" style="width: 98%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">7. Digital & Modern Business</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$105k" data-diff="Medium" data-roi="High"><h3>E-Commerce</h3><p>Online Platforms</p><div class="market-bar"><div class="market-fill" style="width: 80%;"></div></div></div>
+        <div class="card" data-pay="$98k" data-diff="Medium" data-roi="High"><h3>Digital Marketing</h3><p>SEO, Social Media</p><div class="market-bar"><div class="market-fill" style="width: 78%;"></div></div></div>
+        <div class="card" data-pay="$145k" data-diff="Extreme" data-roi="Extreme"><h3>FinTech</h3><p>Tech in Finance</p><div class="market-bar"><div class="market-fill" style="width: 95%;"></div></div></div>
+        <div class="card" data-pay="$112k" data-diff="High" data-roi="High"><h3>Int. Business</h3><p>Global Trade</p><div class="market-bar"><div class="market-fill" style="width: 84%;"></div></div></div>
+        <div class="card" data-pay="$100k" data-diff="Medium" data-roi="Stable"><h3>Supply Chain</h3><p>Logistics & Distribution</p><div class="market-bar"><div class="market-fill" style="width: 76%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">8. Professional Global Courses</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$150k" data-diff="Extreme" data-roi="Supreme"><h3>CFA</h3><p>Investment & Portfolio</p><div class="market-bar"><div class="market-fill" style="width: 97%;"></div></div></div>
+        <div class="card" data-pay="$130k" data-diff="Extreme" data-roi="Extreme"><h3>ACCA</h3><p>Global Finance</p><div class="market-bar"><div class="market-fill" style="width: 94%;"></div></div></div>
+        <div class="card" data-pay="$125k" data-diff="High" data-roi="Extreme"><h3>CPA</h3><p>International Accounting</p><div class="market-bar"><div class="market-fill" style="width: 92%;"></div></div></div>
+        <div class="card" data-pay="$138k" data-diff="Extreme" data-roi="Extreme"><h3>FRM</h3><p>Risk Management</p><div class="market-bar"><div class="market-fill" style="width: 95%;"></div></div></div>
+    </div>
+
+    <footer><p>© 2026 COURSESPHERE // COMMERCE DIMENSION // </p></footer>
+
+    <script>
+        const cards = document.querySelectorAll('.card');
+        const popup = document.getElementById('course-popup');
+
+        const updatePopup = (card) => {
+            const title = card.querySelector('h3').innerText;
+            const pay = card.getAttribute('data-pay');
+            const diff = card.getAttribute('data-diff');
+            const roi = card.getAttribute('data-roi') || "High";
+
+            popup.innerHTML = `
+                <div class="term-line" style="color:#fff;">> MARKET-SCAN: ${title.toUpperCase()}</div>
+                <div class="term-line">> GROWTH_POTENTIAL: ${roi}</div>
+                <div class="term-line">> EST_SALARY: ${pay}</div>
+                <div class="term-line">> MARKET_STRESS: ${diff}</div>
+                <div class="term-line">> STATUS: DATA_READY</div>
+            `;
+
+            if (window.innerWidth > 768) {
+                const rect = card.getBoundingClientRect();
+                popup.style.left = (rect.left + window.scrollX + (rect.width / 2) - 140) + "px";
+                popup.style.top = (rect.top + window.scrollY - 180) + "px";
+                popup.style.transform = "translateY(0px)";
+            } else {
+                popup.style.transform = "translateY(0px)";
+            }
+            popup.style.opacity = "1";
+        };
+
+        const hidePopup = () => {
+            if (window.innerWidth > 768) {
+                popup.style.opacity = "0";
+                popup.style.transform = "translateY(20px)";
+            }
+        };
+
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => updatePopup(card));
+            card.addEventListener('mouseleave', hidePopup);
+            card.addEventListener('click', (e) => {
+                e.stopPropagation();
+                updatePopup(card);
+            });
+        });
+
+        document.addEventListener('click', () => {
+            popup.style.opacity = "0";
+            if(window.innerWidth <= 768) popup.style.transform = "translateY(150px)";
+        });
+    </script>
+<script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+            .then(() => console.log("Science Dimension: App Mode Active"))
+            .catch((err) => console.log("Sync Error", err));
+        }
+    </script>
+</body>
+</html>
+</body>
+</html>

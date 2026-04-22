@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CourseSphere | Your Portal</title>
+<link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo+2:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --neon-blue: #00cfff; }
+        body { background: #000; color: white; font-family: 'Exo 2'; padding: 50px; overflow-x: hidden; }
+        .bg { position: fixed; top:0; left:0; width:100%; height:100%; background: url('final.jpeg') center/cover; opacity: 0.15; z-index: -1; filter: blur(10px); }
+        
+        .dashboard { max-width: 800px; margin: auto; background: rgba(255,255,255,0.03); padding: 50px; border-radius: 40px; border: 1px solid rgba(0,207,255,0.2); backdrop-filter: blur(20px); }
+        
+        .header { text-align: center; margin-bottom: 50px; }
+        .header h1 { font-family: 'Orbitron'; font-size: 28px; letter-spacing: 4px; color: var(--neon-blue); }
+
+        .stat-row { margin-bottom: 25px; }
+        .stat-label { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 8px; letter-spacing: 2px; }
+        .bar-bg { width: 100%; height: 10px; background: rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden; }
+        .bar-fill { height: 100%; width: 0%; transition: 2s ease-out; box-shadow: 0 0 15px currentColor; }
+
+        .pathway-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 40px; }
+        .course-box { background: rgba(255,255,255,0.05); padding: 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); cursor: pointer; transition: 0.3s; }
+        .course-box:hover { border-color: var(--neon-blue); transform: translateY(-5px); background: rgba(0,207,255,0.05); }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="dashboard">
+        <div class="header">
+            <h1 id="userDisplay">PORTAL LOADING...</h1>
+            <p style="font-size: 10px; opacity: 0.5; letter-spacing: 2px;">NEURAL ANALYSIS: 100% COMPLETE</p>
+        </div>
+
+        <div id="statsSection"></div>
+
+        <div id="recommendations">
+            <h3 style="font-family: 'Orbitron'; font-size: 16px; margin: 40px 0 20px 0; color: var(--neon-blue);">RECOGNIZED PATHWAYS</h3>
+            <div class="pathway-grid" id="courseLinks"></div>
+        </div>
+        <button onclick="location.href='index.html'" style="margin-top:30px; background:transparent; border:1px solid #555; color:#555; padding:10px 20px; cursor:pointer; border-radius:20px;">Return to Hub</button>
+    </div>
+
+    <script>
+        window.onload = function() {
+            const name = localStorage.getItem('cs_username') || "RECRUIT";
+            const scores = JSON.parse(localStorage.getItem('userScores')) || {eng:0, med:0, comm:0, sci:0, arts:0, law:0};
+            document.getElementById('userDisplay').innerText = "WELCOME, " + name.toUpperCase();
+
+            const fields = [
+                { id: 'eng', name: 'Engineering', color: '#00cfff', link: 'engineering1.html' },
+                { id: 'med', name: 'Medical', color: '#00ff88', link: 'medical1.html' },
+                { id: 'comm', name: 'Commerce', color: '#ff9900', link: 'commerce1.html' },
+                { id: 'sci', name: 'Science', color: '#ffffff', link: 'science1.html' },
+                { id: 'arts', name: 'Arts', color: '#ff007f', link: 'arts1.html' },
+                { id: 'law', name: 'Law', color: '#bc13fe', link: 'law1.html' }
+            ];
+
+            fields.forEach(field => {
+                const scoreValue = scores[field.id] || 0;
+                const percentage = (scoreValue / 4) * 100; // Scaled for display
+
+                document.getElementById('statsSection').innerHTML += `
+                    <div class="stat-row">
+                        <div class="stat-label"><span>${field.name}</span><span>${Math.round(percentage)}%</span></div>
+                        <div class="bar-bg"><div class="bar-fill" style="width: ${percentage}%; background: ${field.color}; color: ${field.color};"></div></div>
+                    </div>
+                `;
+
+                if(scoreValue > 0) {
+                    document.getElementById('courseLinks').innerHTML += `
+                        <div class="course-box" onclick="location.href='${field.link}'">
+                            <h4 style="margin:0; font-family:Orbitron; color:${field.color}">${field.name}</h4>
+                            <p style="font-size:11px; margin:5px 0 0 0; opacity:0.6;">Specialized modules ready.</p>
+                        </div>
+                    `;
+                }
+            });
+        };
+    </script>
+<script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+            .then(() => console.log("Science Dimension: App Mode Active"))
+            .catch((err) => console.log("Sync Error", err));
+        }
+    </script>
+</body>
+</html>
+</body>
+</html>

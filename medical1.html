@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CourseSphere | Medical Dimension</title>
+<link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo+2:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --med-green: #00ff88; 
+            --glass: rgba(255, 255, 255, 0.03); 
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background: #000; color: white; font-family: 'Exo 2'; 
+            padding: 100px 8% 60px; overflow-x: hidden;
+        }
+        
+        .bg { 
+            position: fixed; top:0; left:0; width:100%; height:100%; 
+            background: url('final.jpeg') center/cover; opacity: 0.1; 
+            z-index: -1; filter: sepia(1) hue-rotate(90deg); 
+        }
+
+        /* --- NAVIGATION --- */
+        .back-nav {
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            z-index: 10001;
+        }
+
+        .btn-back {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--med-green);
+            color: var(--med-green);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 10px;
+            letter-spacing: 2px;
+            border-radius: 50px;
+            transition: 0.4s;
+            backdrop-filter: blur(10px);
+            text-transform: uppercase;
+        }
+
+        .btn-back:hover {
+            background: var(--med-green);
+            color: black;
+            box-shadow: 0 0 25px var(--med-green);
+            transform: scale(1.05);
+        }
+
+        header { text-align: center; margin-bottom: 60px; }
+        header h1 { 
+            font-family: 'Orbitron'; font-size: 3rem; 
+            color: var(--med-green); text-shadow: 0 0 20px var(--med-green); 
+            letter-spacing: 10px; 
+        }
+
+        .subsection-title { 
+            font-family: 'Orbitron'; font-size: 1.4rem; 
+            margin: 80px 0 30px; padding-left: 15px; 
+            border-left: 4px solid var(--med-green); 
+            letter-spacing: 2px; 
+        }
+
+        .courses-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+
+        .card {
+            background: var(--glass); border: 1px solid rgba(0, 255, 136, 0.2); 
+            border-radius: 20px; padding: 25px; backdrop-filter: blur(15px); 
+            transition: 0.4s; cursor: pointer; min-height: 200px; 
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .card:hover { 
+            transform: translateY(-10px); border-color: var(--med-green); 
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3); 
+        }
+
+        .card h3 { font-family: 'Orbitron'; font-size: 1.1rem; color: #fff; margin-bottom: 8px; }
+        .card p { font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); line-height: 1.5; }
+
+        .vital-bar { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-top: 15px; }
+        .vital-fill { height: 100%; background: var(--med-green); box-shadow: 0 0 10px var(--med-green); border-radius: 10px; }
+
+        /* --- THE FLOATING BIO-SCANNER --- */
+        #course-popup {
+            position: absolute; width: 260px; padding: 20px;
+            background: rgba(0, 10, 5, 0.95); border: 2px solid var(--med-green);
+            border-radius: 15px; color: white; font-family: 'Orbitron';
+            font-size: 10px; pointer-events: none; opacity: 0;
+            transform: translateY(20px); transition: opacity 0.3s, transform 0.3s;
+            z-index: 9999; backdrop-filter: blur(15px);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.4);
+        }
+        .term-line { margin-bottom: 6px; border-left: 2px solid var(--med-green); padding-left: 10px; }
+
+        footer { text-align: center; margin-top: 100px; opacity: 0.4; font-family: 'Orbitron'; font-size: 10px; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    
+    <div class="back-nav">
+        <a href="index.html" class="btn-back">« Return to Hub</a>
+    </div>
+
+    <div id="course-popup"></div>
+
+    <header><h1>MEDICAL SECTOR</h1></header>
+
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CourseSphere | Medical Dimension</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo+2:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --med-green: #00ff88; 
+            --glass: rgba(255, 255, 255, 0.03); 
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            background: #000; color: white; font-family: 'Exo 2'; 
+            padding: 100px 5% 60px; overflow-x: hidden;
+        }
+        
+        .bg { 
+            position: fixed; top:0; left:0; width:100%; height:100%; 
+            background: url('final.jpeg') center/cover; opacity: 0.1; 
+            z-index: -1; filter: sepia(1) hue-rotate(90deg); 
+        }
+
+        /* --- NAVIGATION --- */
+        .back-nav { position: fixed; top: 20px; left: 20px; z-index: 10001; }
+        .btn-back {
+            display: flex; align-items: center; padding: 10px 18px;
+            background: rgba(0, 0, 0, 0.8); border: 1px solid var(--med-green);
+            color: var(--med-green); text-decoration: none; font-family: 'Orbitron';
+            font-size: 10px; letter-spacing: 2px; border-radius: 50px;
+            transition: 0.4s; backdrop-filter: blur(10px);
+        }
+        .btn-back:hover { background: var(--med-green); color: #000; box-shadow: 0 0 20px var(--med-green); }
+
+        header { text-align: center; margin-bottom: 50px; }
+        header h1 { 
+            font-family: 'Orbitron'; 
+            font-size: clamp(1.8rem, 8vw, 3rem); 
+            color: var(--med-green); text-shadow: 0 0 20px var(--med-green); 
+            letter-spacing: 5px; 
+        }
+
+        .subsection-title { 
+            font-family: 'Orbitron'; font-size: clamp(1rem, 4vw, 1.4rem); 
+            margin: 60px 0 30px; padding-left: 15px; 
+            border-left: 4px solid var(--med-green); color: var(--med-green);
+        }
+
+        /* --- RESPONSIVE GRID --- */
+        .courses-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 20px; 
+        }
+
+        .card {
+            background: var(--glass); border: 1px solid rgba(0, 255, 136, 0.2); 
+            border-radius: 20px; padding: 25px; backdrop-filter: blur(15px); 
+            transition: 0.3s; cursor: pointer; min-height: 180px; 
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .card:hover { border-color: var(--med-green); transform: translateY(-5px); }
+
+        .card h3 { font-family: 'Orbitron'; font-size: 1.1rem; color: #fff; margin-bottom: 10px; }
+        .card p { font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 15px; }
+
+        .vital-bar { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 10px; }
+        .vital-fill { height: 100%; background: var(--med-green); box-shadow: 0 0 10px var(--med-green); border-radius: 10px; }
+
+        /* --- THE BIO-SCANNER POPUP --- */
+        #course-popup {
+            position: absolute; width: 280px; padding: 20px;
+            background: rgba(0, 10, 5, 0.98); border: 2px solid var(--med-green);
+            border-radius: 15px; color: white; font-family: 'Orbitron';
+            font-size: 10px; pointer-events: none; opacity: 0;
+            transform: translateY(20px); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 9999; backdrop-filter: blur(20px);
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.5);
+        }
+        .term-line { margin-bottom: 6px; border-left: 2px solid var(--med-green); padding-left: 10px; }
+
+        /* --- MOBILE SPECIFIC FIXES --- */
+        @media (max-width: 768px) {
+            body { padding: 90px 4% 120px; }
+            #course-popup {
+                position: fixed; bottom: 20px; left: 5% !important; right: 5% !important;
+                top: auto !important; width: 90%; transform: translateY(150px);
+            }
+            .card:active { transform: scale(0.97); background: rgba(0, 255, 136, 0.1); }
+        }
+
+        footer { text-align: center; margin-top: 80px; opacity: 0.4; font-family: 'Orbitron'; font-size: 9px; }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="back-nav"><a href="index.html" class="btn-back">« HUB</a></div>
+    <div id="course-popup"></div>
+
+    <h1>MEDICAL SECTOR</h1>
+
+    <h3 class="subsection-title">1. Medical Degrees</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$180k" data-stress="98%" data-impact="Supreme"><h3>MBBS</h3><p>Bachelor of Medicine, Bachelor of Surgery</p><div class="vital-bar"><div class="vital-fill" style="width: 98%;"></div></div></div>
+        <div class="card" data-pay="$120k" data-stress="90%" data-impact="High"><h3>BDS</h3><p>Bachelor of Dental Surgery</p><div class="vital-bar"><div class="vital-fill" style="width: 90%;"></div></div></div>
+        <div class="card" data-pay="$85k" data-stress="85%" data-impact="Medium"><h3>BAMS</h3><p>Bachelor of Ayurvedic Medicine & Surgery</p><div class="vital-bar"><div class="vital-fill" style="width: 85%;"></div></div></div>
+        <div class="card" data-pay="$75k" data-stress="80%" data-impact="Medium"><h3>BHMS</h3><p>Bachelor of Homeopathic Medicine & Surgery</p><div class="vital-bar"><div class="vital-fill" style="width: 80%;"></div></div></div>
+        <div class="card" data-pay="$70k" data-stress="75%" data-impact="Medium"><h3>BNYS</h3><p>Bachelor of Naturopathy & Yogic Sciences</p><div class="vital-bar"><div class="vital-fill" style="width: 75%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">2. Allied Health & Paramedical</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$82k" data-stress="70%" data-impact="High"><h3>BPT</h3><p>Bachelor of Physiotherapy</p><div class="vital-bar"><div class="vital-fill" style="width: 70%;"></div></div></div>
+        <div class="card" data-pay="$65k" data-stress="75%" data-impact="High"><h3>B.Sc Nursing</h3><p>Bachelor of Science in Nursing</p><div class="vital-bar"><div class="vital-fill" style="width: 75%;"></div></div></div>
+        <div class="card" data-pay="$55k" data-stress="65%" data-impact="Medium"><h3>GNM Nursing</h3><p>General Nursing & Midwifery</p><div class="vital-bar"><div class="vital-fill" style="width: 65%;"></div></div></div>
+        <div class="card" data-pay="$50k" data-stress="72%" data-impact="Medium"><h3>B.Sc MLT</h3><p>Medical Laboratory Technology</p><div class="vital-bar"><div class="vital-fill" style="width: 72%;"></div></div></div>
+        <div class="card" data-pay="$88k" data-stress="80%" data-impact="High"><h3>B.Sc Radiology</h3><p>Radiology / Imaging Technology</p><div class="vital-bar"><div class="vital-fill" style="width: 80%;"></div></div></div>
+        <div class="card" data-pay="$60k" data-stress="78%" data-impact="Critical"><h3>B.Sc OTT</h3><p>Operation Theatre Technology</p><div class="vital-bar"><div class="vital-fill" style="width: 78%;"></div></div></div>
+        <div class="card" data-pay="$95k" data-stress="85%" data-impact="Critical"><h3>B.Sc Anesthesia</h3><p>Anesthesia Technology</p><div class="vital-bar"><div class="vital-fill" style="width: 85%;"></div></div></div>
+        <div class="card" data-pay="$110k" data-stress="92%" data-impact="Critical"><h3>B.Sc Cardiac</h3><p>Cardiac Care Technology</p><div class="vital-bar"><div class="vital-fill" style="width: 92%;"></div></div></div>
+        <div class="card" data-pay="$75k" data-stress="76%" data-impact="High"><h3>B.Sc Dialysis</h3><p>Dialysis Technology</p><div class="vital-bar"><div class="vital-fill" style="width: 76%;"></div></div></div>
+        <div class="card" data-pay="$72k" data-stress="74%" data-impact="Medium"><h3>B.Sc Optometry</h3><p>Optometry Specialist</p><div class="vital-bar"><div class="vital-fill" style="width: 74%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">3. Pharmacy & Pharmaceutical</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$85k" data-stress="82%" data-impact="Medium"><h3>B.Pharm</h3><p>Bachelor of Pharmacy</p><div class="vital-bar"><div class="vital-fill" style="width: 82%;"></div></div></div>
+        <div class="card" data-pay="$50k" data-stress="60%" data-impact="Low"><h3>D.Pharm</h3><p>Diploma in Pharmacy</p><div class="vital-bar"><div class="vital-fill" style="width: 60%;"></div></div></div>
+        <div class="card" data-pay="$115k" data-stress="92%" data-impact="High"><h3>M.Pharm</h3><p>Master of Pharmacy</p><div class="vital-bar"><div class="vital-fill" style="width: 92%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">4. Nutrition & Public Health</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$68k" data-stress="65%" data-impact="Low"><h3>Nutrition & Dietetics</h3><p>Nutrition Science</p><div class="vital-bar"><div class="vital-fill" style="width: 65%;"></div></div></div>
+        <div class="card" data-pay="$92k" data-stress="78%" data-impact="High"><h3>Public Health</h3><p>Epidemiology & Systems</p><div class="vital-bar"><div class="vital-fill" style="width: 78%;"></div></div></div>
+        <div class="card" data-pay="$60k" data-stress="68%" data-impact="Medium"><h3>Community Health</h3><p>Public Social Health Care</p><div class="vital-bar"><div class="vital-fill" style="width: 68%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">5. Psychology & Mental Health</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$90k" data-stress="80%" data-impact="High"><h3>B.Sc Psychology</h3><p>Behavioral Science</p><div class="vital-bar"><div class="vital-fill" style="width: 80%;"></div></div></div>
+        <div class="card" data-pay="$95k" data-stress="85%" data-impact="Critical"><h3>Mental Health Care</h3><p>Psychiatric Clinical Support</p><div class="vital-bar"><div class="vital-fill" style="width: 85%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">6. Specialized Streams</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$120k" data-stress="90%" data-impact="High"><h3>Biomedical Science</h3><p>Medical Research & Engineering</p><div class="vital-bar"><div class="vital-fill" style="width: 90%;"></div></div></div>
+        <div class="card" data-pay="$145k" data-stress="96%" data-impact="Critical"><h3>Genetic Counseling</h3><p>DNA & Heredity Research</p><div class="vital-bar"><div class="vital-fill" style="width: 96%;"></div></div></div>
+        <div class="card" data-pay="$105k" data-stress="88%" data-impact="High"><h3>Imaging Technology</h3><p>Diagnostic Visual Tech</p><div class="vital-bar"><div class="vital-fill" style="width: 88%;"></div></div></div>
+        <div class="card" data-pay="$130k" data-stress="94%" data-impact="Critical"><h3>Clinical Research</h3><p>Human Trials & Medicine</p><div class="vital-bar"><div class="vital-fill" style="width: 94%;"></div></div></div>
+    </div>
+
+    <footer><p>© 2026 COURSESPHERE // MEDICAL DIMENSION // </p></footer>
+
+    <script>
+        const cards = document.querySelectorAll('.card');
+        const popup = document.getElementById('course-popup');
+
+        const updatePopup = (card) => {
+            const title = card.querySelector('h3').innerText;
+            const pay = card.getAttribute('data-pay') || "TBD";
+            const stress = card.getAttribute('data-stress') || "80%";
+            const impact = card.getAttribute('data-impact') || "High";
+
+            popup.innerHTML = `
+                <div class="term-line" style="color:#fff;">> BIO-SCAN: ${title.toUpperCase()}</div>
+                <div class="term-line">> LIFE_IMPACT: ${impact}</div>
+                <div class="term-line">> EST_SALARY: ${pay}</div>
+                <div class="term-line">> NEURAL_STRESS: ${stress}</div>
+                <div class="term-line">> STATUS: DATA_VERIFIED</div>
+            `;
+
+            if (window.innerWidth > 768) {
+                const rect = card.getBoundingClientRect();
+                popup.style.left = (rect.left + window.scrollX + (rect.width / 2) - 140) + "px";
+                popup.style.top = (rect.top + window.scrollY - 180) + "px";
+                popup.style.transform = "translateY(0px)";
+            } else {
+                popup.style.transform = "translateY(0px)";
+            }
+            popup.style.opacity = "1";
+        };
+
+        const hidePopup = () => {
+            if (window.innerWidth > 768) {
+                popup.style.opacity = "0";
+                popup.style.transform = "translateY(20px)";
+            }
+        };
+
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => updatePopup(card));
+            card.addEventListener('mouseleave', hidePopup);
+            card.addEventListener('click', (e) => {
+                e.stopPropagation();
+                updatePopup(card);
+            });
+        });
+
+        document.addEventListener('click', () => {
+            popup.style.opacity = "0";
+            if(window.innerWidth <= 768) popup.style.transform = "translateY(150px)";
+        });
+    </script>
+<script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+            .then(() => console.log("Science Dimension: App Mode Active"))
+            .catch((err) => console.log("Sync Error", err));
+        }
+    </script>
+</body>
+</html>
+</body>
+</html>

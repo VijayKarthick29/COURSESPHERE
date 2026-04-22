@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CourseSphere | Engineering Dimension</title>
+<link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo+2:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --eng-blue: #00cfff; --glass: rgba(255, 255, 255, 0.05); }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            background: #000; color: white; font-family: 'Exo 2'; 
+            padding: 100px 5% 60px; overflow-x: hidden; 
+        }
+        
+        .bg { position: fixed; top:0; left:0; width:100%; height:100%; background: url('final.jpeg') center/cover; opacity: 0.1; z-index: -1; filter: grayscale(1); }
+
+        /* NAVIGATION */
+        .back-nav { position: fixed; top: 20px; left: 20px; z-index: 10001; }
+        .btn-back {
+            display: flex; align-items: center; padding: 10px 18px;
+            background: rgba(0, 0, 0, 0.8); border: 1px solid var(--eng-blue);
+            color: var(--eng-blue); text-decoration: none; font-family: 'Orbitron';
+            font-size: 10px; letter-spacing: 2px; border-radius: 50px;
+            transition: 0.4s; backdrop-filter: blur(10px);
+        }
+        .btn-back:hover { background: var(--eng-blue); color: #000; box-shadow: 0 0 20px var(--eng-blue); }
+
+        header { text-align: center; margin-bottom: 50px; }
+        header h1 { font-family: 'Orbitron'; font-size: clamp(1.8rem, 8vw, 3rem); color: var(--eng-blue); text-shadow: 0 0 20px var(--eng-blue); letter-spacing: 5px; }
+
+        .subsection-title { font-family: 'Orbitron'; font-size: clamp(1rem, 4vw, 1.4rem); margin: 60px 0 30px; padding-left: 15px; border-left: 4px solid var(--eng-blue); color: var(--eng-blue); }
+
+        /* RESPONSIVE GRID */
+        .courses-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 20px; 
+        }
+
+        .card {
+            background: var(--glass); border: 1px solid rgba(255, 255, 255, 0.1); 
+            border-radius: 20px; padding: 25px; backdrop-filter: blur(15px); 
+            transition: 0.3s; cursor: pointer; min-height: 180px; 
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .card:hover { border-color: var(--eng-blue); transform: translateY(-5px); }
+
+        .card h3 { font-family: 'Orbitron'; font-size: 1.1rem; margin-bottom: 8px; }
+        .card p { font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 15px; }
+
+        .load-bar { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 10px; }
+        .load-fill { height: 100%; background: var(--eng-blue); box-shadow: 0 0 10px var(--eng-blue); border-radius: 10px; }
+
+        /* SCANNER POPUP */
+        #course-popup {
+            position: absolute; width: 280px; padding: 20px;
+            background: rgba(0, 8, 15, 0.98); border: 2px solid var(--eng-blue);
+            border-radius: 15px; color: white; font-family: 'Orbitron';
+            font-size: 10px; pointer-events: none; opacity: 0;
+            transform: translateY(20px); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 9999; backdrop-filter: blur(20px);
+            box-shadow: 0 0 40px rgba(0, 207, 255, 0.5);
+        }
+        .term-line { margin-bottom: 6px; border-left: 2px solid var(--eng-blue); padding-left: 10px; }
+
+        /* MOBILE FIXES */
+        @media (max-width: 768px) {
+            body { padding: 90px 4% 120px; }
+            #course-popup {
+                position: fixed; bottom: 20px; left: 5% !important; right: 5% !important;
+                top: auto !important; width: 90%; transform: translateY(150px);
+            }
+            .card:active { transform: scale(0.97); background: rgba(0, 207, 255, 0.1); }
+        }
+
+        footer { text-align: center; margin-top: 80px; opacity: 0.3; font-family: 'Orbitron'; font-size: 9px; }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="back-nav"><a href="index.html" class="btn-back">« HUB</a></div>
+    <div id="course-popup"></div>
+
+    <header><h1>ENGINEERING SECTOR</h1></header>
+
+    <h3 class="subsection-title">1. Core Engineering Branches</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$91k" data-diff="85%" data-growth="Stable"><h3>Mechanical Engineering</h3><p>Machines, Thermodynamics & Manufacturing</p><div class="load-bar"><div class="load-fill" style="width: 85%;"></div></div></div>
+        <div class="card" data-pay="$88k" data-diff="70%" data-growth="Steady"><h3>Civil Engineering</h3><p>Construction, Structures & Infrastructure</p><div class="load-bar"><div class="load-fill" style="width: 70%;"></div></div></div>
+        <div class="card" data-pay="$95k" data-diff="82%" data-growth="High"><h3>Electrical Engineering</h3><p>Power Systems & Control Systems</p><div class="load-bar"><div class="load-fill" style="width: 82%;"></div></div></div>
+        <div class="card" data-pay="$98k" data-diff="88%" data-growth="Extreme"><h3>ECE</h3><p>Circuits, Communication & VLSI</p><div class="load-bar"><div class="load-fill" style="width: 88%;"></div></div></div>
+        <div class="card" data-pay="$85k" data-diff="75%" data-growth="Medium"><h3>Instrumentation</h3><p>Measurement & Automation</p><div class="load-bar"><div class="load-fill" style="width: 75%;"></div></div></div>
+        <div class="card" data-pay="$102k" data-diff="80%" data-growth="Stable"><h3>Chemical Engineering</h3><p>Processes & Material Science</p><div class="load-bar"><div class="load-fill" style="width: 80%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">2. Computing & Technology</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$115k" data-diff="95%" data-growth="Exponential"><h3>CSE</h3><p>Programming, AI & Data Structures</p><div class="load-bar"><div class="load-fill" style="width: 95%;"></div></div></div>
+        <div class="card" data-pay="$108k" data-diff="85%" data-growth="High"><h3>Information Technology</h3><p>Software Systems & Networking</p><div class="load-bar"><div class="load-fill" style="width: 85%;"></div></div></div>
+        <div class="card" data-pay="$145k" data-diff="98%" data-growth="Critical"><h3>AI & ML</h3><p>Neural Networks & Deep Learning</p><div class="load-bar"><div class="load-fill" style="width: 98%;"></div></div></div>
+        <div class="card" data-pay="$120k" data-diff="92%" data-growth="Extreme"><h3>Cybersecurity</h3><p>Ethical Hacking & Defense</p><div class="load-bar"><div class="load-fill" style="width: 92%;"></div></div></div>
+        <div class="card" data-pay="$112k" data-diff="86%" data-growth="High"><h3>Software Engineering</h3><p>SDLC, Agile & DevOps</p><div class="load-bar"><div class="load-fill" style="width: 86%;"></div></div></div>
+        <div class="card" data-pay="$118k" data-diff="94%" data-growth="Extreme"><h3>Robotics & Automation</h3><p>Mechatronics & Autonomy</p><div class="load-bar"><div class="load-fill" style="width: 94%;"></div></div></div>
+        <div class="card" data-pay="$105k" data-diff="89%" data-growth="High"><h3>Embedded Systems</h3><p>Microcontrollers & IoT</p><div class="load-bar"><div class="load-fill" style="width: 89%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">3. Specialized Branches</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$89k" data-diff="78%" data-growth="Medium"><h3>Automobile</h3><p>Vehicle Design & Electronics</p><div class="load-bar"><div class="load-fill" style="width: 78%;"></div></div></div>
+        <div class="card" data-pay="$125k" data-diff="96%" data-growth="High"><h3>Aerospace</h3><p>Aircraft & Spacecraft Design</p><div class="load-bar"><div class="load-fill" style="width: 96%;"></div></div></div>
+        <div class="card" data-pay="$98k" data-diff="84%" data-growth="High"><h3>Biotechnology</h3><p>Genetic & Bioprocess Systems</p><div class="load-bar"><div class="load-fill" style="width: 84%;"></div></div></div>
+        <div class="card" data-pay="$82k" data-diff="70%" data-growth="High"><h3>Environmental</h3><p>Sustainability & Waste Mgmt</p><div class="load-bar"><div class="load-fill" style="width: 70%;"></div></div></div>
+        <div class="card" data-pay="$110k" data-diff="82%" data-growth="Stable"><h3>Petroleum</h3><p>Oil & Gas Extraction</p><div class="load-bar"><div class="load-fill" style="width: 82%;"></div></div></div>
+        <div class="card" data-pay="$85k" data-diff="75%" data-growth="Stable"><h3>Mining</h3><p>Mineral Extraction & Safety</p><div class="load-bar"><div class="load-fill" style="width: 75%;"></div></div></div>
+        <div class="card" data-pay="$92k" data-diff="77%" data-growth="Medium"><h3>Marine</h3><p>Ship Design & Architecture</p><div class="load-bar"><div class="load-fill" style="width: 77%;"></div></div></div>
+        <div class="card" data-pay="$75k" data-diff="65%" data-growth="Medium"><h3>Textile</h3><p>Fabric Design & Machinery</p><div class="load-bar"><div class="load-fill" style="width: 65%;"></div></div></div>
+        <div class="card" data-pay="$114k" data-diff="90%" data-growth="High"><h3>Mechatronics</h3><p>Mech + Electronics Systems</p><div class="load-bar"><div class="load-fill" style="width: 90%;"></div></div></div>
+        <div class="card" data-pay="$96k" data-diff="72%" data-growth="High"><h3>Industrial</h3><p>Optimization & Lean Mgmt</p><div class="load-bar"><div class="load-fill" style="width: 72%;"></div></div></div>
+        <div class="card" data-pay="$88k" data-diff="74%" data-growth="Medium"><h3>Production</h3><p>Manufacturing & Quality</p><div class="load-bar"><div class="load-fill" style="width: 74%;"></div></div></div>
+        <div class="card" data-pay="$104k" data-diff="81%" data-growth="Extreme"><h3>Energy</h3><p>Renewables & Power Gen</p><div class="load-bar"><div class="load-fill" style="width: 81%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">4. Interdisciplinary Courses</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$132k" data-diff="97%" data-growth="Extreme"><h3>Nanotechnology</h3><p>Nano-materials & Devices</p><div class="load-bar"><div class="load-fill" style="width: 97%;"></div></div></div>
+        <div class="card" data-pay="$102k" data-diff="83%" data-growth="Medium"><h3>Structural</h3><p>Advanced Civil Structures</p><div class="load-bar"><div class="load-fill" style="width: 83%;"></div></div></div>
+        <div class="card" data-pay="$128k" data-diff="91%" data-growth="Extreme"><h3>Smart Systems</h3><p>AI Industrial Automation</p><div class="load-bar"><div class="load-fill" style="width: 91%;"></div></div></div>
+        <div class="card" data-pay="$84k" data-diff="76%" data-growth="Medium"><h3>Hydraulic</h3><p>Fluid & Water Resources</p><div class="load-bar"><div class="load-fill" style="width: 76%;"></div></div></div>
+    </div>
+
+    <footer>© 2026 COURSESPHERE // ENGINEERING // </footer>
+
+    <script>
+        const cards = document.querySelectorAll('.card');
+        const popup = document.getElementById('course-popup');
+
+        const updatePopup = (card) => {
+            const title = card.querySelector('h3').innerText;
+            const pay = card.getAttribute('data-pay');
+            const diff = card.getAttribute('data-diff');
+            const growth = card.getAttribute('data-growth');
+
+            popup.innerHTML = `
+                <div class="term-line" style="color:#fff;">> SCANNING: ${title.toUpperCase()}</div>
+                <div class="term-line">> GROWTH: ${growth}</div>
+                <div class="term-line">> AVG_SALARY: ${pay}</div>
+                <div class="term-line">> DIFFICULTY: ${diff}</div>
+                <div class="term-line">> STATUS: DATA_VERIFIED</div>
+            `;
+
+            if (window.innerWidth > 768) {
+                const rect = card.getBoundingClientRect();
+                popup.style.left = (rect.left + window.scrollX + (rect.width / 2) - 140) + "px";
+                popup.style.top = (rect.top + window.scrollY - 180) + "px";
+                popup.style.transform = "translateY(0px)";
+            } else {
+                popup.style.transform = "translateY(0px)";
+            }
+            popup.style.opacity = "1";
+        };
+
+        const hidePopup = () => {
+            if (window.innerWidth > 768) {
+                popup.style.opacity = "0";
+                popup.style.transform = "translateY(20px)";
+            }
+        };
+
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => updatePopup(card));
+            card.addEventListener('mouseleave', hidePopup);
+            card.addEventListener('click', (e) => {
+                e.stopPropagation();
+                updatePopup(card);
+            });
+        });
+
+        document.addEventListener('click', () => {
+            popup.style.opacity = "0";
+            if(window.innerWidth <= 768) popup.style.transform = "translateY(150px)";
+        });
+    </script>
+<script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+            .then(() => console.log("Science Dimension: App Mode Active"))
+            .catch((err) => console.log("Sync Error", err));
+        }
+    </script>
+</body>
+</html>
+</body>
+</html>

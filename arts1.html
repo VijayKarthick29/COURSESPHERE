@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CourseSphere | Arts & Humanities Dimension</title>
+<link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo+2:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --arts-cyan: #00f2ff; 
+            --glass: rgba(255, 255, 255, 0.03); 
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #000; color: white; font-family: 'Exo 2'; 
+            padding: 100px 8% 60px; overflow-x: hidden;
+        }
+        
+        .bg { 
+            position: fixed; top:0; left:0; width:100%; height:100%; 
+            background: url('final.jpeg') center/cover; opacity: 0.1; 
+            z-index: -1; filter: saturate(1.5) hue-rotate(140deg); 
+        }
+
+        /* --- NAVIGATION --- */
+        .back-nav { position: fixed; top: 25px; left: 25px; z-index: 10001; }
+        .btn-back {
+            display: flex; align-items: center; padding: 12px 20px;
+            background: rgba(0, 0, 0, 0.7); border: 1px solid var(--arts-cyan);
+            color: var(--arts-cyan); text-decoration: none; font-family: 'Orbitron';
+            font-size: 10px; letter-spacing: 2px; border-radius: 50px;
+            transition: 0.4s; backdrop-filter: blur(10px); text-transform: uppercase;
+        }
+        .btn-back:hover { background: var(--arts-cyan); color: black; box-shadow: 0 0 25px var(--arts-cyan); transform: scale(1.05); }
+
+        header { text-align: center; margin-bottom: 60px; }
+        header h1 { font-family: 'Orbitron'; font-size: 3rem; color: #fff; text-shadow: 0 0 20px var(--arts-cyan); letter-spacing: 10px; }
+
+        .subsection-title { font-family: 'Orbitron'; font-size: 1.4rem; margin: 80px 0 30px; padding-left: 15px; border-left: 4px solid var(--arts-cyan); letter-spacing: 2px; }
+
+        .courses-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+
+        .card {
+            background: var(--glass); border: 1px solid rgba(0, 242, 255, 0.2); 
+            border-radius: 20px; padding: 25px; backdrop-filter: blur(15px); 
+            transition: 0.4s; cursor: pointer; min-height: 180px; 
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .card:hover { transform: translateY(-10px); border-color: var(--arts-cyan); box-shadow: 0 10px 30px rgba(0, 242, 255, 0.3); }
+
+        .card h3 { font-family: 'Orbitron'; font-size: 1.1rem; color: #fff; margin-bottom: 8px; }
+        .card p { font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); line-height: 1.5; }
+
+        .arts-bar { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-top: 15px; }
+        .arts-fill { height: 100%; background: var(--arts-cyan); box-shadow: 0 0 10px var(--arts-cyan); border-radius: 10px; }
+
+        /* --- FLOATING SCANNER --- */
+        #course-popup {
+            position: absolute; width: 260px; padding: 20px;
+            background: rgba(0, 10, 15, 0.95); border: 2px solid var(--arts-cyan);
+            border-radius: 15px; color: white; font-family: 'Orbitron';
+            font-size: 10px; pointer-events: none; opacity: 0;
+            transform: translateY(20px); transition: opacity 0.3s, transform 0.3s;
+            z-index: 9999; backdrop-filter: blur(15px);
+            box-shadow: 0 0 30px rgba(0, 242, 255, 0.4);
+        }
+        .term-line { margin-bottom: 6px; border-left: 2px solid var(--arts-cyan); padding-left: 10px; }
+
+        footer { text-align: center; margin-top: 100px; opacity: 0.4; font-family: 'Orbitron'; font-size: 10px; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="back-nav"><a href="index.html" class="btn-back">« Return to Hub</a></div>
+    <div id="course-popup"></div>
+
+    <header><h1>ARTS SECTOR</h1></header>
+
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CourseSphere | Arts Dimension</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo+2:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --arts-cyan: #00f2ff; 
+            --glass: rgba(255, 255, 255, 0.03); 
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            background: #000; color: white; font-family: 'Exo 2'; 
+            padding: 100px 5% 60px; overflow-x: hidden;
+        }
+        
+        .bg { 
+            position: fixed; top:0; left:0; width:100%; height:100%; 
+            background: url('final.jpeg') center/cover; opacity: 0.1; 
+            z-index: -1; filter: saturate(1.5) hue-rotate(140deg); 
+        }
+
+        /* --- NAVIGATION --- */
+        .back-nav { position: fixed; top: 20px; left: 20px; z-index: 10001; }
+        .btn-back {
+            display: flex; align-items: center; padding: 10px 18px;
+            background: rgba(0, 0, 0, 0.8); border: 1px solid var(--arts-cyan);
+            color: var(--arts-cyan); text-decoration: none; font-family: 'Orbitron';
+            font-size: 10px; letter-spacing: 2px; border-radius: 50px;
+            transition: 0.4s; backdrop-filter: blur(10px);
+        }
+        .btn-back:hover { background: var(--arts-cyan); color: #000; box-shadow: 0 0 20px var(--arts-cyan); }
+
+        header { text-align: center; margin-bottom: 50px; }
+        header h1 { 
+            font-family: 'Orbitron'; 
+            font-size: clamp(1.5rem, 7vw, 3rem); 
+            color: #fff; text-shadow: 0 0 20px var(--arts-cyan); 
+            letter-spacing: 5px; 
+        }
+
+        .subsection-title { 
+            font-family: 'Orbitron'; font-size: clamp(0.9rem, 4vw, 1.3rem); 
+            margin: 50px 0 25px; padding-left: 15px; 
+            border-left: 4px solid var(--arts-cyan); color: var(--arts-cyan);
+        }
+
+        /* --- RESPONSIVE GRID --- */
+        .courses-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 20px; 
+        }
+
+        .card {
+            background: var(--glass); border: 1px solid rgba(0, 242, 255, 0.2); 
+            border-radius: 20px; padding: 25px; backdrop-filter: blur(15px); 
+            transition: 0.3s; cursor: pointer; min-height: 180px; 
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .card:hover { border-color: var(--arts-cyan); transform: translateY(-5px); }
+
+        .card h3 { font-family: 'Orbitron'; font-size: 1.1rem; color: #fff; margin-bottom: 8px; }
+        .card p { font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); line-height: 1.5; }
+
+        .arts-bar { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-top: 15px; }
+        .arts-fill { height: 100%; background: var(--arts-cyan); box-shadow: 0 0 10px var(--arts-cyan); border-radius: 10px; }
+
+        /* --- THE CREATIVE-SCANNER POPUP --- */
+        #course-popup {
+            position: absolute; width: 280px; padding: 20px;
+            background: rgba(0, 10, 15, 0.98); border: 2px solid var(--arts-cyan);
+            border-radius: 15px; color: white; font-family: 'Orbitron';
+            font-size: 10px; pointer-events: none; opacity: 0;
+            transform: translateY(20px); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 9999; backdrop-filter: blur(20px);
+            box-shadow: 0 0 40px rgba(0, 242, 255, 0.5);
+        }
+        .term-line { margin-bottom: 6px; border-left: 2px solid var(--arts-cyan); padding-left: 10px; }
+
+        /* --- MOBILE SPECIFIC OVERRIDES --- */
+        @media (max-width: 768px) {
+            body { padding: 90px 4% 120px; }
+            #course-popup {
+                position: fixed; bottom: 20px; left: 5% !important; right: 5% !important;
+                top: auto !important; width: 90%; transform: translateY(150px);
+            }
+            .card:active { transform: scale(0.97); background: rgba(0, 242, 255, 0.1); }
+        }
+
+        footer { text-align: center; margin-top: 80px; opacity: 0.4; font-family: 'Orbitron'; font-size: 9px; }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="back-nav"><a href="index.html" class="btn-back">« HUB</a></div>
+    <div id="course-popup"></div>
+
+    <h1>ARTS DIMENSION</h1>
+
+    <h3 class="subsection-title">1. Core Arts Degrees</h3>
+    <div class="courses-grid">
+        <div class="card" data-impact="High" data-depth="70%"><h3>BA</h3><p>General Arts Studies</p><div class="arts-bar"><div class="arts-fill" style="width: 70%;"></div></div></div>
+        <div class="card" data-impact="Extreme" data-depth="85%"><h3>BA Honours</h3><p>Subject Specialization</p><div class="arts-bar"><div class="arts-fill" style="width: 85%;"></div></div></div>
+        <div class="card" data-impact="High" data-depth="80%"><h3>Liberal Arts</h3><p>Interdisciplinary Study</p><div class="arts-bar"><div class="arts-fill" style="width: 80%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">2. Languages & Literature</h3>
+    <div class="courses-grid">
+        <div class="card" data-impact="High" data-depth="88%"><h3>English Literature</h3><p>Poetry, Drama, Fiction</p><div class="arts-bar"><div class="arts-fill" style="width: 88%;"></div></div></div>
+        <div class="card" data-impact="Medium" data-depth="75%"><h3>Regional Languages</h3><p>Tamil, Hindi etc.</p><div class="arts-bar"><div class="arts-fill" style="width: 75%;"></div></div></div>
+        <div class="card" data-impact="High" data-depth="80%"><h3>Foreign Languages</h3><p>French, German, Japanese</p><div class="arts-bar"><div class="arts-fill" style="width: 80%;"></div></div></div>
+        <div class="card" data-impact="High" data-depth="92%"><h3>Linguistics</h3><p>Language Structure</p><div class="arts-bar"><div class="arts-fill" style="width: 92%;"></div></div></div>
+        <div class="card" data-impact="High" data-depth="85%"><h3>Comparative Lit</h3><p>Global Literature</p><div class="arts-bar"><div class="arts-fill" style="width: 85%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">3. Social Sciences</h3>
+    <div class="courses-grid">
+        <div class="card" data-impact="High" data-depth="90%"><h3>History</h3><p>Ancient to Modern</p><div class="arts-bar"><div class="arts-fill" style="width: 90%;"></div></div></div>
+        <div class="card" data-impact="Extreme" data-depth="88%"><h3>Political Science</h3><p>Government & Politics</p><div class="arts-bar"><div class="arts-fill" style="width: 88%;"></div></div></div>
+        <div class="card" data-impact="High" data-depth="82%"><h3>Sociology</h3><p>Society & Culture</p><div class="arts-bar"><div class="arts-fill" style="width: 82%;"></div></div></div>
+        <div class="card" data-impact="Extreme" data-depth="95%"><h3>Psychology</h3><p>Mind & Behavior</p><div class="arts-bar"><div class="arts-fill" style="width: 95%;"></div></div></div>
+        <div class="card" data-impact="Medium" data-depth="78%"><h3>Geography</h3><p>Earth & Environment</p><div class="arts-bar"><div class="arts-fill" style="width: 78%;"></div></div></div>
+        <div class="card" data-impact="High" data-depth="92%"><h3>Anthropology</h3><p>Human Evolution</p><div class="arts-bar"><div class="arts-fill" style="width: 92%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">4. Fine & Performing Arts</h3>
+    <div class="courses-grid">
+        <div class="card" data-impact="Extreme" data-depth="85%"><h3>BFA</h3><p>Painting, Sculpture</p><div class="arts-bar"><div class="arts-fill" style="width: 85%;"></div></div></div>
+        <div class="card" data-impact="High" data-depth="80%"><h3>Visual Arts</h3><p>Drawing, Illustration</p><div class="arts-bar"><div class="arts-fill" style="width: 80%;"></div></div></div>
+        <div class="card" data-impact="High" data-depth="75%"><h3>Music</h3><p>Vocal & Instrumental</p><div class="arts-bar"><div class="arts-fill" style="width: 75%;"></div></div></div>
+        <div class="card" data-impact="High" data-depth="78%"><h3>Dance</h3><p>Classical & Modern</p><div class="arts-bar"><div class="arts-fill" style="width: 78%;"></div></div></div>
+        <div class="card" data-impact="Extreme" data-depth="82%"><h3>Theatre</h3><p>Acting & Stage</p><div class="arts-bar"><div class="arts-fill" style="width: 82%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">5. Media & Communication</h3>
+    <div class="courses-grid">
+        <div class="card" data-impact="Extreme" data-depth="88%"><h3>Journalism</h3><p>News & Reporting</p><div class="arts-bar"><div class="arts-fill" style="width: 88%;"></div></div></div>
+        <div class="card" data-impact="High" data-depth="80%"><h3>Mass Comm</h3><p>Media & PR</p><div class="arts-bar"><div class="arts-fill" style="width: 80%;"></div></div></div>
+        <div class="card" data-impact="Extreme" data-depth="90%"><h3>Film Studies</h3><p>Cinema & Editing</p><div class="arts-bar"><div class="arts-fill" style="width: 90%;"></div></div></div>
+        <div class="card" data-impact="High" data-depth="84%"><h3>Digital Media</h3><p>Content Creation</p><div class="arts-bar"><div class="arts-fill" style="width: 84%;"></div></div></div>
+        <div class="card" data-impact="High" data-depth="75%"><h3>Public Relations</h3><p>Brand Communication</p><div class="arts-bar"><div class="arts-fill" style="width: 75%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">6. Design & Creative Fields</h3>
+    <div class="courses-grid">
+        <div class="card" data-impact="Critical" data-depth="95%"><h3>B.Des</h3><p>Product, UI/UX</p><div class="arts-bar"><div class="arts-fill" style="width: 95%;"></div></div></div>
+        <div class="card" data-impact="High" data-depth="82%"><h3>Fashion Design</h3><p>Clothing & Style</p><div class="arts-bar"><div class="arts-fill" style="width: 82%;"></div></div></div>
+        <div class="card" data-impact="High" data-depth="85%"><h3>Interior Design</h3><p>Space Planning</p><div class="arts-bar"><div class="arts-fill" style="width: 85%;"></div></div></div>
+        <div class="card" data-impact="Extreme" data-depth="88%"><h3>Graphic Design</h3><p>Visual Communication</p><div class="arts-bar"><div class="arts-fill" style="width: 88%;"></div></div></div>
+        <div class="card" data-impact="Extreme" data-depth="92%"><h3>Animation</h3><p>2D/3D Multimedia</p><div class="arts-bar"><div class="arts-fill" style="width: 92%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">7. Philosophy & Culture</h3>
+    <div class="courses-grid">
+        <div class="card" data-impact="High" data-depth="85%"><h3>Philosophy</h3><p>Logic & Ethics</p><div class="arts-bar"><div class="arts-fill" style="width: 85%;"></div></div></div>
+        <div class="card" data-impact="Medium" data-depth="72%"><h3>Religions</h3><p>World Religions</p><div class="arts-bar"><div class="arts-fill" style="width: 72%;"></div></div></div>
+        <div class="card" data-impact="High" data-depth="78%"><h3>Cultural Studies</h3><p>Traditions & Society</p><div class="arts-bar"><div class="arts-fill" style="width: 78%;"></div></div></div>
+        <div class="card" data-impact="High" data-depth="80%"><h3>Ethics</h3><p>Moral Studies</p><div class="arts-bar"><div class="arts-fill" style="width: 80%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">8. Education & Teaching</h3>
+    <div class="courses-grid">
+        <div class="card" data-impact="Extreme" data-depth="90%"><h3>BA + B.Ed</h3><p>Teaching Career</p><div class="arts-bar"><div class="arts-fill" style="width: 90%;"></div></div></div>
+        <div class="card" data-impact="High" data-depth="85%"><h3>B.Ed</h3><p>Teaching Methods</p><div class="arts-bar"><div class="arts-fill" style="width: 85%;"></div></div></div>
+        <div class="card" data-impact="High" data-depth="88%"><h3>Special Ed</h3><p>Inclusive Teaching</p><div class="arts-bar"><div class="arts-fill" style="width: 88%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">9. Law (Arts Path)</h3>
+    <div class="courses-grid">
+        <div class="card" data-impact="Extreme" data-depth="94%"><h3>BA LLB</h3><p>Law + Arts Synergy</p><div class="arts-bar"><div class="arts-fill" style="width: 94%;"></div></div></div>
+        <div class="card" data-impact="High" data-depth="90%"><h3>LLB</h3><p>Legal Foundations</p><div class="arts-bar"><div class="arts-fill" style="width: 90%;"></div></div></div>
+        <div class="card" data-impact="High" data-depth="85%"><h3>Legal Studies</h3><p>Law Basics</p><div class="arts-bar"><div class="arts-fill" style="width: 85%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">10. Tourism & Public Services</h3>
+    <div class="courses-grid">
+        <div class="card" data-impact="Medium" data-depth="75%"><h3>Tourism</h3><p>Travel Industry</p><div class="arts-bar"><div class="arts-fill" style="width: 75%;"></div></div></div>
+        <div class="card" data-impact="Medium" data-depth="78%"><h3>Hospitality</h3><p>Hotels & Service</p><div class="arts-bar"><div class="arts-fill" style="width: 78%;"></div></div></div>
+        <div class="card" data-impact="High" data-depth="85%"><h3>Public Admin</h3><p>Government Roles</p><div class="arts-bar"><div class="arts-fill" style="width: 85%;"></div></div></div>
+        <div class="card" data-impact="High" data-depth="88%"><h3>Social Work</h3><p>Community Service</p><div class="arts-bar"><div class="arts-fill" style="width: 88%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">11. Psychology Specializations</h3>
+    <div class="courses-grid">
+        <div class="card" data-impact="Extreme" data-depth="92%"><h3>Applied Psych</h3><p>Practical Use</p><div class="arts-bar"><div class="arts-fill" style="width: 92%;"></div></div></div>
+        <div class="card" data-impact="Extreme" data-depth="95%"><h3>Counseling</h3><p>Mental Health</p><div class="arts-bar"><div class="arts-fill" style="width: 95%;"></div></div></div>
+        <div class="card" data-impact="High" data-depth="85%"><h3>Child Dev</h3><p>Growth Studies</p><div class="arts-bar"><div class="arts-fill" style="width: 85%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">12. Emerging Fields</h3>
+    <div class="courses-grid">
+        <div class="card" data-impact="Extreme" data-depth="92%"><h3>Creative Writing</h3><p>Storytelling</p><div class="arts-bar"><div class="arts-fill" style="width: 92%;"></div></div></div>
+        <div class="card" data-impact="High" data-depth="80%"><h3>Gender Studies</h3><p>Social Equality</p><div class="arts-bar"><div class="arts-fill" style="width: 80%;"></div></div></div>
+        <div class="card" data-impact="Extreme" data-depth="94%"><h3>Int. Relations</h3><p>Global Politics</p><div class="arts-bar"><div class="arts-fill" style="width: 94%;"></div></div></div>
+        <div class="card" data-impact="High" data-depth="82%"><h3>Urban Studies</h3><p>City Planning</p><div class="arts-bar"><div class="arts-fill" style="width: 82%;"></div></div></div>
+        <div class="card" data-impact="Extreme" data-depth="90%"><h3>Digital Humanities</h3><p>Tech + Arts</p><div class="arts-bar"><div class="arts-fill" style="width: 90%;"></div></div></div>
+    </div>
+
+    <footer><p>© 2026 COURSESPHERE // ARTS DIMENSION // </p></footer>
+
+    <script>
+        const cards = document.querySelectorAll('.card');
+        const popup = document.getElementById('course-popup');
+
+        const updatePopup = (card) => {
+            const title = card.querySelector('h3').innerText;
+            const impact = card.getAttribute('data-impact') || "High";
+            const depth = card.getAttribute('data-depth') || "80%";
+
+            popup.innerHTML = `
+                <div class="term-line" style="color:#fff;">> SCANNING: ${title.toUpperCase()}</div>
+                <div class="term-line">> IMPACT: ${impact}</div>
+                <div class="term-line">> COGNITIVE_DEPTH: ${depth}</div>
+                <div class="term-line">> STATUS: EXPRESSION_OK</div>
+                <div class="term-line">> MODE: HUMAN_CENTRIC</div>
+            `;
+
+            if (window.innerWidth > 768) {
+                const rect = card.getBoundingClientRect();
+                popup.style.left = (rect.left + window.scrollX + (rect.width / 2) - 140) + "px";
+                popup.style.top = (rect.top + window.scrollY - 180) + "px";
+                popup.style.transform = "translateY(0px)";
+            } else {
+                popup.style.transform = "translateY(0px)";
+            }
+            popup.style.opacity = "1";
+        };
+
+        const hidePopup = () => {
+            if (window.innerWidth > 768) {
+                popup.style.opacity = "0";
+                popup.style.transform = "translateY(20px)";
+            }
+        };
+
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => updatePopup(card));
+            card.addEventListener('mouseleave', hidePopup);
+            card.addEventListener('click', (e) => {
+                e.stopPropagation();
+                updatePopup(card);
+            });
+        });
+
+        document.addEventListener('click', () => {
+            popup.style.opacity = "0";
+            if(window.innerWidth <= 768) popup.style.transform = "translateY(150px)";
+        });
+    </script>
+<script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+            .then(() => console.log("Science Dimension: App Mode Active"))
+            .catch((err) => console.log("Sync Error", err));
+        }
+    </script>
+</body>
+</html>
+</body>
+</html>

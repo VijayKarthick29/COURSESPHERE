@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CourseSphere | Law Dimension</title>
+<link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo+2:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --law-red: #ff3131; 
+            --law-gold: #ffd700;
+            --glass: rgba(255, 255, 255, 0.03); 
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            background: #000; color: white; font-family: 'Exo 2'; 
+            padding: 100px 8% 60px; overflow-x: hidden;
+        }
+        
+        .bg { 
+            position: fixed; top:0; left:0; width:100%; height:100%; 
+            background: url('final.jpeg') center/cover; opacity: 0.12; 
+            z-index: -1; filter: sepia(1) saturate(2) hue-rotate(-50deg); 
+        }
+
+        /* --- NAVIGATION --- */
+        .back-nav {
+            position: fixed;
+            top: 25px;
+            left: 25px;
+            z-index: 10001;
+        }
+
+        .btn-back {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--law-gold);
+            color: var(--law-gold);
+            text-decoration: none;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 10px;
+            letter-spacing: 2px;
+            border-radius: 50px;
+            transition: 0.4s;
+            backdrop-filter: blur(10px);
+            text-transform: uppercase;
+        }
+
+        .btn-back:hover {
+            background: var(--law-gold);
+            color: black;
+            box-shadow: 0 0 25px var(--law-gold);
+            transform: scale(1.05);
+        }
+
+        header { text-align: center; margin-bottom: 60px; }
+        header h1 { 
+            font-family: 'Orbitron'; font-size: 3rem; 
+            color: var(--law-gold); text-shadow: 0 0 20px var(--law-red); 
+            letter-spacing: 10px; 
+        }
+
+        .subsection-title { 
+            font-family: 'Orbitron'; font-size: 1.4rem; 
+            margin: 80px 0 30px; padding-left: 15px; 
+            border-left: 4px solid var(--law-red); 
+            letter-spacing: 2px; 
+        }
+
+        .courses-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
+
+        .card {
+            background: var(--glass); border: 1px solid rgba(255, 49, 49, 0.2); 
+            border-radius: 20px; padding: 25px; backdrop-filter: blur(15px); 
+            transition: 0.4s; cursor: pointer; min-height: 200px; 
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .card:hover { 
+            transform: translateY(-10px); border-color: var(--law-gold); 
+            box-shadow: 0 10px 30px rgba(255, 49, 49, 0.3); 
+        }
+
+        .card h3 { font-family: 'Orbitron'; font-size: 1.1rem; color: #fff; margin-bottom: 8px; }
+        .card p { font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); line-height: 1.5; }
+
+        .law-bar { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-top: 15px; }
+        .law-fill { height: 100%; background: var(--law-red); box-shadow: 0 0 10px var(--law-red); border-radius: 10px; }
+
+        /* --- THE FLOATING JUSTICE-SCANNER --- */
+        #course-popup {
+            position: absolute; width: 260px; padding: 20px;
+            background: rgba(20, 0, 0, 0.95); border: 2px solid var(--law-gold);
+            border-radius: 15px; color: white; font-family: 'Orbitron';
+            font-size: 10px; pointer-events: none; opacity: 0;
+            transform: translateY(20px); transition: opacity 0.3s, transform 0.3s;
+            z-index: 9999; backdrop-filter: blur(15px);
+            box-shadow: 0 0 30px rgba(255, 49, 49, 0.4);
+        }
+        .term-line { margin-bottom: 6px; border-left: 2px solid var(--law-red); padding-left: 10px; }
+
+        footer { text-align: center; margin-top: 100px; opacity: 0.4; font-family: 'Orbitron'; font-size: 10px; letter-spacing: 2px; }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    
+    <div class="back-nav">
+        <a href="index.html" class="btn-back">« Return to Hub</a>
+    </div>
+
+    <div id="course-popup"></div>
+
+    <header><h1>LAW DIMENSION</h1></header>
+
+   <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CourseSphere | Law Dimension</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo+2:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --law-red: #ff3131; 
+            --law-gold: #ffd700;
+            --glass: rgba(255, 255, 255, 0.03); 
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body { 
+            background: #000; color: white; font-family: 'Exo 2'; 
+            padding: 100px 5% 60px; overflow-x: hidden;
+        }
+        
+        .bg { 
+            position: fixed; top:0; left:0; width:100%; height:100%; 
+            background: url('final.jpeg') center/cover; opacity: 0.12; 
+            z-index: -1; filter: sepia(1) saturate(2) hue-rotate(-50deg); 
+        }
+
+        /* --- NAVIGATION --- */
+        .back-nav { position: fixed; top: 20px; left: 20px; z-index: 10001; }
+        .btn-back {
+            display: flex; align-items: center; padding: 10px 18px;
+            background: rgba(0, 0, 0, 0.8); border: 1px solid var(--law-gold);
+            color: var(--law-gold); text-decoration: none; font-family: 'Orbitron';
+            font-size: 10px; letter-spacing: 2px; border-radius: 50px;
+            transition: 0.4s; backdrop-filter: blur(10px);
+        }
+        .btn-back:hover { background: var(--law-gold); color: #000; box-shadow: 0 0 20px var(--law-gold); }
+
+        header { text-align: center; margin-bottom: 50px; }
+        header h1 { 
+            font-family: 'Orbitron'; 
+            font-size: clamp(1.5rem, 7vw, 3rem); 
+            color: var(--law-gold); text-shadow: 0 0 20px var(--law-red); 
+            letter-spacing: 8px; 
+        }
+
+        .subsection-title { 
+            font-family: 'Orbitron'; font-size: clamp(0.9rem, 4vw, 1.3rem); 
+            margin: 50px 0 25px; padding-left: 15px; 
+            border-left: 4px solid var(--law-red); color: var(--law-gold);
+        }
+
+        /* --- RESPONSIVE GRID --- */
+        .courses-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 20px; 
+        }
+
+        .card {
+            background: var(--glass); border: 1px solid rgba(255, 49, 49, 0.2); 
+            border-radius: 20px; padding: 25px; backdrop-filter: blur(15px); 
+            transition: 0.3s; cursor: pointer; min-height: 180px; 
+            display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .card:hover { border-color: var(--law-gold); transform: translateY(-5px); }
+
+        .card h3 { font-family: 'Orbitron'; font-size: 1.1rem; color: #fff; margin-bottom: 8px; }
+        .card p { font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); line-height: 1.5; }
+
+        .law-bar { width: 100%; height: 4px; background: rgba(255,255,255,0.1); border-radius: 10px; margin-top: 15px; }
+        .law-fill { height: 100%; background: var(--law-red); box-shadow: 0 0 10px var(--law-red); border-radius: 10px; }
+
+        /* --- THE JURIS-SCANNER POPUP --- */
+        #course-popup {
+            position: absolute; width: 280px; padding: 20px;
+            background: rgba(20, 0, 0, 0.98); border: 2px solid var(--law-gold);
+            border-radius: 15px; color: white; font-family: 'Orbitron';
+            font-size: 10px; pointer-events: none; opacity: 0;
+            transform: translateY(20px); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 9999; backdrop-filter: blur(20px);
+            box-shadow: 0 0 40px rgba(255, 49, 49, 0.5);
+        }
+        .term-line { margin-bottom: 6px; border-left: 2px solid var(--law-red); padding-left: 10px; }
+
+        /* --- MOBILE OVERRIDES --- */
+        @media (max-width: 768px) {
+            body { padding: 90px 4% 120px; }
+            #course-popup {
+                position: fixed; bottom: 20px; left: 5% !important; right: 5% !important;
+                top: auto !important; width: 90%; transform: translateY(150px);
+            }
+            .card:active { transform: scale(0.97); background: rgba(255, 49, 49, 0.1); }
+        }
+
+        footer { text-align: center; margin-top: 80px; opacity: 0.3; font-family: 'Orbitron'; font-size: 9px; }
+    </style>
+</head>
+<body>
+    <div class="bg"></div>
+    <div class="back-nav"><a href="index.html" class="btn-back">« HUB</a></div>
+    <div id="course-popup"></div>
+
+    <h1>LAW DIMENSION</h1>
+
+    <h3 class="subsection-title">1. Core Law Degrees</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$85k" data-diff="85%" data-auth="High"><h3>LLB</h3><p>Core Legal Education</p><div class="law-bar"><div class="law-fill" style="width: 85%;"></div></div></div>
+        <div class="card" data-pay="$95k" data-diff="88%" data-auth="High"><h3>BA LLB</h3><p>Arts + Law</p><div class="law-bar"><div class="law-fill" style="width: 88%;"></div></div></div>
+        <div class="card" data-pay="$110k" data-diff="92%" data-auth="Extreme"><h3>BBA LLB</h3><p>Business + Law</p><div class="law-bar"><div class="law-fill" style="width: 92%;"></div></div></div>
+        <div class="card" data-pay="$105k" data-diff="90%" data-auth="Extreme"><h3>B.Com LLB</h3><p>Commerce + Law</p><div class="law-bar"><div class="law-fill" style="width: 90%;"></div></div></div>
+        <div class="card" data-pay="$100k" data-diff="94%" data-auth="Extreme"><h3>B.Sc LLB</h3><p>Science + Law</p><div class="law-bar"><div class="law-fill" style="width: 94%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">2. Corporate & Business Law</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$160k" data-diff="95%" data-auth="Critical"><h3>Corporate Law</h3><p>Company Regulations</p><div class="law-bar"><div class="law-fill" style="width: 95%;"></div></div></div>
+        <div class="card" data-pay="$140k" data-diff="88%" data-auth="High"><h3>Business Law</h3><p>Contracts & Trade</p><div class="law-bar"><div class="law-fill" style="width: 88%;"></div></div></div>
+        <div class="card" data-pay="$135k" data-diff="85%" data-auth="High"><h3>Commercial Law</h3><p>Business Transactions</p><div class="law-bar"><div class="law-fill" style="width: 85%;"></div></div></div>
+        <div class="card" data-pay="$150k" data-diff="92%" data-auth="Extreme"><h3>International Business Law</h3><p>Global Trade Laws</p><div class="law-bar"><div class="law-fill" style="width: 92%;"></div></div></div>
+        <div class="card" data-pay="$130k" data-diff="90%" data-auth="High"><h3>Banking & Finance Law</h3><p>Financial Regulations</p><div class="law-bar"><div class="law-fill" style="width: 90%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">3. Criminal Law</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$115k" data-diff="98%" data-auth="Critical"><h3>Criminal Law</h3><p>Crimes & Punishments</p><div class="law-bar"><div class="law-fill" style="width: 98%;"></div></div></div>
+        <div class="card" data-pay="$90k" data-diff="82%" data-auth="Medium"><h3>Criminology</h3><p>Study of Crime</p><div class="law-bar"><div class="law-fill" style="width: 82%;"></div></div></div>
+        <div class="card" data-pay="$110k" data-diff="94%" data-auth="High"><h3>Forensic Law</h3><p>Law + Forensics</p><div class="law-bar"><div class="law-fill" style="width: 94%;"></div></div></div>
+        <div class="card" data-pay="$125k" data-diff="95%" data-auth="Extreme"><h3>Cyber Crime Law</h3><p>Online Crimes</p><div class="law-bar"><div class="law-fill" style="width: 95%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">4. Civil & Constitutional Law</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$100k" data-diff="80%" data-auth="High"><h3>Civil Law</h3><p>Property & Disputes</p><div class="law-bar"><div class="law-fill" style="width: 80%;"></div></div></div>
+        <div class="card" data-pay="$145k" data-diff="96%" data-auth="Critical"><h3>Constitutional Law</h3><p>Rights & Governance</p><div class="law-bar"><div class="law-fill" style="width: 96%;"></div></div></div>
+        <div class="card" data-pay="$110k" data-diff="85%" data-auth="High"><h3>Administrative Law</h3><p>Government Rules</p><div class="law-bar"><div class="law-fill" style="width: 85%;"></div></div></div>
+        <div class="card" data-pay="$95k" data-diff="88%" data-auth="High"><h3>Human Rights Law</h3><p>Rights Protection</p><div class="law-bar"><div class="law-fill" style="width: 88%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">5. Specialized Law Fields</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$155k" data-diff="93%" data-auth="Extreme"><h3>IPR Law</h3><p>Patents & Copyrights</p><div class="law-bar"><div class="law-fill" style="width: 93%;"></div></div></div>
+        <div class="card" data-pay="$110k" data-diff="82%" data-auth="High"><h3>Environmental Law</h3><p>Sustainability</p><div class="law-bar"><div class="law-fill" style="width: 82%;"></div></div></div>
+        <div class="card" data-pay="$85k" data-diff="75%" data-auth="Medium"><h3>Labor Law</h3><p>Worker Rights</p><div class="law-bar"><div class="law-fill" style="width: 75%;"></div></div></div>
+        <div class="card" data-pay="$90k" data-diff="72%" data-auth="Medium"><h3>Family Law</h3><p>Marriage & Divorce</p><div class="law-bar"><div class="law-fill" style="width: 72%;"></div></div></div>
+        <div class="card" data-pay="$140k" data-diff="94%" data-auth="Extreme"><h3>Taxation Law</h3><p>Tax Rules</p><div class="law-bar"><div class="law-fill" style="width: 94%;"></div></div></div>
+        <div class="card" data-pay="$105k" data-diff="80%" data-auth="High"><h3>Immigration Law</h3><p>Citizenship & Visa</p><div class="law-bar"><div class="law-fill" style="width: 80%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">6. Emerging Law Fields</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$130k" data-diff="91%" data-auth="Extreme"><h3>Cyber Law</h3><p>Internet Regulations</p><div class="law-bar"><div class="law-fill" style="width: 91%;"></div></div></div>
+        <div class="card" data-pay="$160k" data-diff="97%" data-auth="Critical"><h3>AI Law</h3><p>Artificial Intelligence</p><div class="law-bar"><div class="law-fill" style="width: 97%;"></div></div></div>
+        <div class="card" data-pay="$175k" data-diff="98%" data-auth="Critical"><h3>Space Law</h3><p>Outer Space Rules</p><div class="law-bar"><div class="law-fill" style="width: 98%;"></div></div></div>
+        <div class="card" data-pay="$115k" data-diff="85%" data-auth="High"><h3>Media Law</h3><p>Entertainment & Content</p><div class="law-bar"><div class="law-fill" style="width: 85%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">7. Legal Support Courses</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$60k" data-diff="65%" data-auth="Medium"><h3>Legal Studies</h3><p>Law Basics</p><div class="law-bar"><div class="law-fill" style="width: 65%;"></div></div></div>
+        <div class="card" data-pay="$75k" data-diff="72%" data-auth="High"><h3>Paralegal</h3><p>Legal Assistance</p><div class="law-bar"><div class="law-fill" style="width: 72%;"></div></div></div>
+        <div class="card" data-pay="$65k" data-diff="68%" data-auth="Medium"><h3>Legal Secretary</h3><p>Office Legal Work</p><div class="law-bar"><div class="law-fill" style="width: 68%;"></div></div></div>
+    </div>
+
+    <h3 class="subsection-title">8. Higher Studies</h3>
+    <div class="courses-grid">
+        <div class="card" data-pay="$150k" data-diff="95%" data-auth="Extreme"><h3>LLM</h3><p>Law Specialization</p><div class="law-bar"><div class="law-fill" style="width: 95%;"></div></div></div>
+        <div class="card" data-pay="$135k" data-diff="99%" data-auth="Critical"><h3>PhD Law</h3><p>Research</p><div class="law-bar"><div class="law-fill" style="width: 99%;"></div></div></div>
+        <div class="card" data-pay="$180k" data-diff="100%" data-auth="Supreme"><h3>Judiciary Exams</h3><p>Judge Career</p><div class="law-bar"><div class="law-fill" style="width: 100%;"></div></div></div>
+        <div class="card" data-pay="$95k" data-diff="92%" data-auth="High"><h3>Bar Council</h3><p>Practice License</p><div class="law-bar"><div class="law-fill" style="width: 92%;"></div></div></div>
+    </div>
+
+    <footer><p>© 2026 COURSESPHERE // LAW DIMENSION //</p></footer>
+
+    <script>
+        const cards = document.querySelectorAll('.card');
+        const popup = document.getElementById('course-popup');
+
+        const updatePopup = (card) => {
+            const title = card.querySelector('h3').innerText;
+            const pay = card.getAttribute('data-pay');
+            const diff = card.getAttribute('data-diff');
+            const auth = card.getAttribute('data-auth');
+
+            popup.innerHTML = `
+                <div class="term-line" style="color:#fff;">> JURIS-SCAN: ${title.toUpperCase()}</div>
+                <div class="term-line">> AUTHORITY: ${auth}</div>
+                <div class="term-line">> EST_RETAINER: ${pay}</div>
+                <div class="term-line">> CASE_STRESS: ${diff}</div>
+                <div class="term-line">> STATUS: VERDICT_OK</div>
+            `;
+
+            if (window.innerWidth > 768) {
+                const rect = card.getBoundingClientRect();
+                popup.style.left = (rect.left + window.scrollX + (rect.width / 2) - 140) + "px";
+                popup.style.top = (rect.top + window.scrollY - 180) + "px";
+                popup.style.transform = "translateY(0px)";
+            } else {
+                popup.style.transform = "translateY(0px)";
+            }
+            popup.style.opacity = "1";
+        };
+
+        const hidePopup = () => {
+            if (window.innerWidth > 768) {
+                popup.style.opacity = "0";
+                popup.style.transform = "translateY(20px)";
+            }
+        };
+
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => updatePopup(card));
+            card.addEventListener('mouseleave', hidePopup);
+            card.addEventListener('click', (e) => {
+                e.stopPropagation();
+                updatePopup(card);
+            });
+        });
+
+        document.addEventListener('click', () => {
+            popup.style.opacity = "0";
+            if(window.innerWidth <= 768) popup.style.transform = "translateY(150px)";
+        });
+    </script>
+<script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+            .then(() => console.log("Science Dimension: App Mode Active"))
+            .catch((err) => console.log("Sync Error", err));
+        }
+    </script>
+</body>
+</html>
+</body>
+</html>

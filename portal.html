@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CourseSphere | Neural Portal</title>
+<link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-cyan: #00cfff;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            background: #000;
+            color: white;
+            font-family: 'Exo 2', sans-serif;
+            padding: 80px 5% 40px; /* Adaptive padding for mobile */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        .bg-layer {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('final.jpeg') center/cover no-repeat;
+            z-index: -2;
+            filter: brightness(0.15) blur(12px);
+        }
+
+        header { text-align: center; margin-bottom: 40px; width: 100%; }
+        header h1 { 
+            font-family: 'Orbitron'; 
+            font-size: clamp(1.8rem, 6vw, 2.8rem); 
+            color: var(--primary-cyan); 
+            letter-spacing: clamp(4px, 2vw, 10px); 
+            text-shadow: 0 0 25px var(--primary-cyan); 
+            text-transform: uppercase;
+        }
+
+        /* --- THE RESPONSIVE GRID --- */
+        .portal-grid {
+            display: grid;
+            /* Swaps from 3 columns to 1 column automatically */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1100px;
+            background: var(--glass);
+            padding: clamp(20px, 5vw, 50px);
+            border-radius: clamp(20px, 4vw, 40px);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(30px);
+            z-index: 1;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+        }
+
+        .report-card {
+            background: rgba(255, 255, 255, 0.04);
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+        }
+
+        .report-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-5px);
+            border-color: var(--primary-cyan);
+        }
+
+        .report-card:active { transform: scale(0.98); }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .report-card h3 { font-family: 'Orbitron'; font-size: 16px; letter-spacing: 1px; }
+        
+        .perc-display { 
+            font-family: 'Orbitron'; 
+            font-size: 14px; 
+            font-weight: 900;
+        }
+
+        .report-card p { font-size: 11px; opacity: 0.6; margin-bottom: 15px; line-height: 1.4; }
+
+        .bar-bg { width: 100%; height: 6px; background: rgba(255,255,255,0.08); border-radius: 10px; }
+        .bar-fill { height: 100%; border-radius: 10px; transition: 2s cubic-bezier(0.19, 1, 0.22, 1); width: 0%; }
+
+        /* --- THE RETURN BUTTON --- */
+        .btn-container {
+            margin-top: 40px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            max-width: 1100px;
+            z-index: 10;
+        }
+
+        .btn-hub {
+            padding: 14px 35px;
+            background: rgba(0, 207, 255, 0.1); 
+            border: 2px solid var(--primary-cyan);
+            color: var(--primary-cyan);
+            text-decoration: none;
+            font-family: 'Orbitron';
+            font-size: 12px;
+            font-weight: 900;
+            border-radius: 50px;
+            transition: 0.4s;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            box-shadow: 0 0 20px rgba(0, 207, 255, 0.3);
+        }
+
+        .btn-hub:hover {
+            background: var(--primary-cyan);
+            color: #000;
+            box-shadow: 0 0 40px var(--primary-cyan);
+            transform: translateY(-3px);
+        }
+
+        @media (max-width: 768px) {
+            body { padding-top: 60px; }
+            .portal-grid { padding: 25px 15px; }
+            .report-card { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-layer"></div>
+
+    <header>
+        <h1>Neural Portal</h1>
+        <p id="user-display" style="font-family: 'Orbitron'; font-size: 9px; opacity: 0.7; margin-top: 10px; letter-spacing: 3px; color: var(--primary-cyan);"></p>
+    </header>
+
+    <div class="portal-grid" id="analytics-grid">
+        </div>
+
+    <div class="btn-container">
+        <a href="index.html" class="btn-hub">Return to Hub</a>
+    </div>
+
+    <script>
+        window.onload = function() {
+            const userName = localStorage.getItem('cs_username');
+            const userScores = JSON.parse(localStorage.getItem('userScores')) || {eng:0, med:0, comm:0, sci:0, arts:0, law:0};
+            
+            if (!userName) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            document.getElementById('user-display').innerText = "CALIBRATING UNIT: " + userName.toUpperCase();
+
+            const fields = [
+                { id: 'eng', name: 'Engineering', color: '#00cfff', link: 'engineering1.html' },
+                { id: 'med', name: 'Medical', color: '#00ff88', link: 'medical1.html' },
+                { id: 'comm', name: 'Commerce', color: '#ff9900', link: 'commerce1.html' },
+                { id: 'sci', name: 'Science', color: '#ffffff', link: 'science1.html' },
+                { id: 'arts', name: 'Arts', color: '#ff007f', link: 'arts1.html' },
+                { id: 'law', name: 'Law', color: '#bc13fe', link: 'law1.html' }
+            ];
+
+            const grid = document.getElementById('analytics-grid');
+
+            fields.forEach(field => {
+                const score = userScores[field.id] || 0;
+                // Percentage based on max score of 5
+                const percent = Math.round(Math.min((score / 5) * 100, 100));
+
+                grid.innerHTML += `
+                    <div class="report-card" onclick="location.href='${field.link}'">
+                        <div class="card-header">
+                            <h3 style="color: ${field.color}">${field.name}</h3>
+                            <span class="perc-display" style="color: ${field.color}">${percent}%</span>
+                        </div>
+                        <p>Dimensional alignment detected. Tap to initialize travel.</p>
+                        <div class="bar-bg">
+                            <div class="bar-fill" id="fill-${field.id}" style="background: ${field.color}; box-shadow: 0 0 15px ${field.color}"></div>
+                        </div>
+                    </div>
+                `;
+
+                setTimeout(() => {
+                    const bar = document.getElementById(`fill-${field.id}`);
+                    if(bar) bar.style.width = percent + "%";
+                }, 300);
+            });
+        };
+    </script>
+<script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+            .then(() => console.log("Science Dimension: App Mode Active"))
+            .catch((err) => console.log("Sync Error", err));
+        }
+    </script>
+</body>
+</html>
+</body>
+</html>

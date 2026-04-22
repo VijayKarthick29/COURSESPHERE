@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CourseSphere | The Journey</title>
+<link rel="manifest" href="manifest.json">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo+2:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --neon-blue: #00cfff; --glass: rgba(255, 255, 255, 0.05); }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body { 
+            background: #000; 
+            font-family: 'Exo 2', sans-serif; 
+            color: white; 
+            height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            overflow: hidden; 
+            padding: 20px;
+        }
+        
+        .bg-layer { 
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
+            background: url('final.jpeg') center/cover no-repeat; 
+            z-index: -1; filter: brightness(0.3) blur(5px); 
+        }
+
+        /* PROGRESS BAR */
+        .progress-container { 
+            position: fixed; 
+            top: 20px; 
+            width: 80%; 
+            max-width: 400px; 
+            height: 6px; 
+            background: rgba(255,255,255,0.1); 
+            border-radius: 10px; 
+        }
+        #progress-fill { width: 0%; height: 100%; background: var(--neon-blue); box-shadow: 0 0 15px var(--neon-blue); transition: 0.6s; }
+
+        /* CARDS */
+        .journey-card {
+            width: 100%;
+            max-width: 500px; 
+            background: var(--glass); 
+            backdrop-filter: blur(25px); 
+            padding: clamp(25px, 5vw, 50px) clamp(20px, 5vw, 40px);
+            border-radius: 30px; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            text-align: center;
+            transition: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .question-text { 
+            font-family: 'Orbitron'; 
+            font-size: clamp(1.1rem, 4vw, 1.4rem); 
+            margin-bottom: clamp(20px, 5vw, 35px); 
+            line-height: 1.4; 
+            letter-spacing: 1px; 
+        }
+
+        .options { display: flex; flex-direction: column; gap: 12px; }
+        
+        .opt-btn {
+            padding: 16px; 
+            background: rgba(255,255,255,0.05); 
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 15px; 
+            color: white; 
+            cursor: pointer; 
+            transition: 0.3s; 
+            font-size: 13px; 
+            letter-spacing: 1px;
+            font-family: 'Exo 2';
+        }
+        
+        .opt-btn:hover, .opt-btn:active { 
+            background: rgba(0, 207, 255, 0.1); 
+            border-color: var(--neon-blue); 
+            transform: scale(1.02); 
+            box-shadow: 0 0 20px rgba(0, 207, 255, 0.2); 
+        }
+
+        /* ANIMATION STATES */
+        .slide-out { transform: translateX(-120%) rotate(-5deg); opacity: 0; }
+        .slide-in { animation: slideIn 0.5s forwards; }
+        @keyframes slideIn { from { transform: translateX(120%) rotate(5deg); opacity: 0; } to { transform: translateX(0) rotate(0); opacity: 1; } }
+
+        /* Mobile specific adjustment for very small screens */
+        @media (max-height: 600px) {
+            .journey-card { padding: 20px; }
+            .question-text { margin-bottom: 15px; }
+            .opt-btn { padding: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-layer"></div>
+    <div class="progress-container"><div id="progress-fill"></div></div>
+
+    <div id="quiz-container" style="width: 100%; display: flex; justify-content: center;">
+        <div class="journey-card" id="question-card">
+            <p id="probe-num" style="color: var(--neon-blue); font-size: 9px; margin-bottom: 10px; letter-spacing: 3px; font-family: 'Orbitron';">NEURAL PROBE 01</p>
+            <div class="question-text" id="q-text">Initializing Systems...</div>
+            <div class="options" id="opt-container"></div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            { q: "You find a mysterious 'Do Not Touch' button. What do you do?", options: [{t:"Press it to see how it works", s:"eng"}, {t:"Warn others of the legal risks", s:"law"}] },
+            { q: "A friend is injured. Your immediate reaction is:", options: [{t:"Check vitals/offer help", s:"med"}, {t:"Calculate the physics of the fall", s:"sci"}] },
+            { q: "You have $100. How do you double it?", options: [{t:"Start a trading bot", s:"comm"}, {t:"Paint a masterpiece to sell", s:"arts"}] },
+            { q: "The Wi-Fi goes down. You:", options: [{t:"Open the router to fix wiring", s:"eng"}, {t:"Read the service contract for a refund", s:"law"}] },
+            { q: "Stranded on Mars, you'd rather have:", options: [{t:"A lab to study the dust", s:"sci"}, {t:"A sketchbook for the horizon", s:"arts"}] },
+            { q: "A zombie apocalypse starts. You are:", options: [{t:"The one finding a cure", s:"med"}, {t:"The one managing the supplies", s:"comm"}] },
+            { q: "You see a typo on a menu. You:", options: [{t:"Ignore it and buy the steak", s:"comm"}, {t:"Correct it to follow the rules", s:"law"}] },
+            { q: "Your dream house must have:", options: [{t:"A secret lab with lasers", s:"sci"}, {t:"A 19th-century art garden", s:"arts"}] },
+            { q: "If you were a superhero, you'd want:", options: [{t:"Technopathy (Control machines)", s:"eng"}, {t:"Cellular Regeneration (Heal)", s:"med"}] },
+            { q: "You win a free trip. Where to?", options: [{t:"High-tech Tokyo", s:"eng"}, {t:"Historic Museum in Italy", s:"arts"}] }
+        ];
+
+        let currentQ = 0;
+        let scores = { eng:0, med:0, comm:0, sci:0, arts:0, law:0 };
+
+        function loadQuestion() {
+            const q = questions[currentQ];
+            document.getElementById('probe-num').innerText = `NEURAL PROBE ${currentQ + 1 < 10 ? '0' : ''}${currentQ + 1}`;
+            document.getElementById('q-text').innerText = q.q;
+            const container = document.getElementById('opt-container');
+            container.innerHTML = '';
+            
+            q.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'opt-btn';
+                btn.innerText = opt.t;
+                btn.onclick = () => selectOption(opt.s);
+                container.appendChild(btn);
+            });
+
+            document.getElementById('progress-fill').style.width = ((currentQ + 1) / questions.length) * 100 + "%";
+        }
+
+        function selectOption(category) {
+            scores[category]++;
+            const card = document.getElementById('question-card');
+            card.classList.add('slide-out');
+
+            setTimeout(() => {
+                currentQ++;
+                if (currentQ < questions.length) {
+                    card.classList.remove('slide-out');
+                    card.classList.add('slide-in');
+                    loadQuestion();
+                    setTimeout(() => card.classList.remove('slide-in'), 500);
+                } else {
+                    showResult();
+                }
+            }, 400);
+        }
+
+        function showResult() {
+            localStorage.setItem('userScores', JSON.stringify(scores));
+            const winner = Object.keys(scores).reduce((a, b) => scores[a] > scores[b] ? a : b);
+            const titles = { eng:"Engineering", med:"Medical", comm:"Commerce", sci:"Science", arts:"Arts", law:"Law" };
+
+            const container = document.getElementById('quiz-container');
+            container.innerHTML = `
+                <div class="journey-card slide-in">
+                    <h1 style="font-family: Orbitron; color: var(--neon-blue); font-size: clamp(1.2rem, 5vw, 1.8rem);">MAPPING COMPLETE</h1>
+                    <p style="font-style: italic; margin: 20px 0; opacity: 0.7; font-size: 13px;">"Your potential is a spark that can light up the entire world. Step into your dimension."</p>
+                    <p style="font-size: 12px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.5;">Primary Match:</p>
+                    <h2 style="font-family: Orbitron; font-size: clamp(1.5rem, 6vw, 2.2rem); margin: 10px 0 30px;">${titles[winner]}</h2>
+                    <button class="opt-btn" style="border-color: var(--neon-blue); color: var(--neon-blue); width: 100%; font-family: 'Orbitron';" onclick="location.href='portal.html'">ACCESS PORTAL</button>
+                </div>
+            `;
+        }
+        window.onload = loadQuestion;
+    </script>
+<script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js')
+            .then(() => console.log("Science Dimension: App Mode Active"))
+            .catch((err) => console.log("Sync Error", err));
+        }
+    </script>
+</body>
+</html>
+</body>
+</html>
