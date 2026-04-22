@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CourseSphere | Neural Analytics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Exo+2:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --neon: #00f2ff; --glass: rgba(0, 242, 255, 0.05); --border: rgba(0, 242, 255, 0.2); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            background: #020202; color: white; font-family: 'Exo 2', sans-serif; 
+            min-height: 100vh; overflow-x: hidden;
+        }
+
+        body::before {
+            content: " "; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            background-size: 100% 2px, 3px 100%; z-index: 100; pointer-events: none;
+        }
+
+        .bg-layer { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('final.jpeg') center/cover no-repeat; z-index: -2; filter: brightness(0.1) blur(20px); }
+
+        .container { max-width: 1000px; margin: 50px auto; padding: 20px; z-index: 10; position: relative; }
+
+        .header { text-align: center; margin-bottom: 40px; }
+        .header h1 { font-family: 'Orbitron'; font-size: 2.5rem; color: var(--neon); text-shadow: 0 0 15px var(--neon); margin-bottom: 10px; }
+        .stream-tag { font-family: 'Orbitron'; font-size: 12px; letter-spacing: 5px; opacity: 0.7; }
+
+        .score-card { 
+            background: var(--glass); border: 1px solid var(--border); border-radius: 20px;
+            padding: 40px; text-align: center; backdrop-filter: blur(20px); margin-bottom: 30px;
+        }
+        .score-val { font-family: 'Orbitron'; font-size: 80px; color: #fff; margin: 20px 0; }
+        .score-label { opacity: 0.6; font-size: 14px; letter-spacing: 2px; }
+
+        .review-section { margin-top: 40px; }
+        .review-item { 
+            background: rgba(255,255,255,0.03); border-left: 4px solid #333; 
+            padding: 20px; margin-bottom: 15px; border-radius: 0 10px 10px 0;
+        }
+        .review-item.correct { border-left-color: #00ff41; background: rgba(0, 255, 65, 0.05); }
+        .review-item.wrong { border-left-color: #ff3131; background: rgba(255, 49, 49, 0.05); }
+        .review-item.skipped { border-left-color: #ffff00; background: rgba(255, 255, 0, 0.05); }
+
+        .q-text { font-weight: 600; margin-bottom: 10px; display: block; }
+        .ans-row { font-size: 14px; margin-top: 5px; opacity: 0.8; }
+        .correct-ans { color: #00ff41; font-weight: bold; }
+
+        .actions { display: flex; gap: 20px; margin-top: 40px; }
+        .btn { 
+            flex: 1; padding: 15px; border: 1px solid var(--border); background: transparent;
+            color: white; font-family: 'Orbitron'; cursor: pointer; border-radius: 5px;
+            transition: 0.3s; text-decoration: none; text-align: center; font-size: 12px;
+        }
+        .btn:hover { background: var(--neon); color: #000; box-shadow: 0 0 20px var(--neon); }
+        .home-btn { border-color: #fff; }
+    </style>
+</head>
+<body>
+    <div class="bg-layer"></div>
+    <div class="container">
+        <div class="header">
+            <div class="stream-tag" id="stream-name">ACCESSING_DATA...</div>
+            <h1>NEURAL_ANALYTICS</h1>
+        </div>
+
+        <div class="score-card">
+            <div class="score-label">APTITUDE_EFFICIENCY</div>
+            <div class="score-val" id="final-score">00/15</div>
+            <div id="performance-msg">Validating neural sync...</div>
+        </div>
+
+        <div class="review-section" id="review-log"></div>
+
+        <div class="actions">
+            <a href="portal.html" class="btn home-btn">BACK_TO_PORTAL</a>
+            <a href="index.html" class="btn">DISCONNECT_SYSTEM</a>
+        </div>
+    </div>
+
+    <script>
+        const questionMaster = {
+            "Arts": [
+                { q: "Who painted the Mona Lisa?", opts: ["Pablo Picasso", "Leonardo da Vinci", "Vincent van Gogh", "Michelangelo"] },
+                { q: "What are the primary colors?", opts: ["Red, Blue, Yellow", "Red, Green, Blue", "Yellow, Green, Black", "Blue, Black, White"] },
+                { q: "Which is a famous Indian classical dance form?", opts: ["Hip Hop", "Salsa", "Bharatanatyam", "Ballet"] },
+                { q: "Who wrote Romeo and Juliet?", opts: ["Charles Dickens", "William Shakespeare", "Rabindranath Tagore", "Jane Austen"] },
+                { q: "What is a sculpture?", opts: ["A painting", "A 3D art form", "A poem", "A song"] },
+                { q: "Perspective in art refers to:", opts: ["Use of colors", "Depth and distance representation", "Sound in art", "Movement in dance"] },
+                { q: "Which instrument is commonly used in Indian classical music?", opts: ["Guitar", "Piano", "Veena", "Drums"] },
+                { q: "What is abstract art?", opts: ["Realistic art", "Nature drawing", "Non-realistic representation", "Only black and white art"] },
+                { q: "Who is known for the painting Starry Night?", opts: ["Leonardo da Vinci", "Vincent van Gogh", "Claude Monet", "Pablo Picasso"] },
+                { q: "What is drama?", opts: ["A painting technique", "A form of performance art", "A type of music", "A sculpture style"] },
+                { q: "Which art movement is Pablo Picasso associated with?", opts: ["Impressionism", "Cubism", "Surrealism", "Realism"] },
+                { q: "What is the main focus of Renaissance art?", opts: ["Abstract ideas", "Humanism and realism", "Religious restrictions", "Digital art"] },
+                { q: "Which Indian artist is famous for modern art?", opts: ["Raja Ravi Varma", "M.F. Husain", "Amrita Sher-Gil", "All of the above"] },
+                { q: "What is the term for repeated design in art?", opts: ["Balance", "Pattern", "Contrast", "Harmony"] },
+                { q: "Which element of art refers to lightness or darkness?", opts: ["Texture", "Shape", "Value", "Form"] }
+            ],
+            "Engineering": [
+                { q: "What does PLC stand for?", opts: ["Programmable Logic Controller", "Personal Logic Computer", "Pneumatic Logic Center", "Power Logic Control"] },
+                { q: "Standard voltage for industrial PLCs?", opts: ["5V DC", "12V DC", "24V DC", "110V AC"] },
+                { q: "Used to control pneumatic cylinders?", opts: ["Resistor", "Solenoid Valve", "Capacitor", "Transistor"] },
+                { q: "Standard communication protocol?", opts: ["HTTP", "Modbus", "SMTP", "FTP"] },
+                { q: "What is an Actuator?", opts: ["A Sensor", "A Controller", "A Moving Component", "A Power Supply"] },
+                { q: "Unit of electrical resistance?", opts: ["Volt", "Ampere", "Ohm", "Watt"] },
+                { q: "Ohm's Law formula?", opts: ["V = I/R", "V = IR", "V = I+R", "V = R/I"] },
+                { q: "Device to measure current?", opts: ["Voltmeter", "Ammeter", "Ohmmeter", "Wattmeter"] },
+                { q: "DC stands for?", opts: ["Direct Current", "Digital Current", "Double Current", "Data Current"] },
+                { q: "Basic building block of PLC logic?", opts: ["Rungs", "Steps", "Lines", "Nodes"] },
+                { q: "NO in electrical terms?", opts: ["Not Open", "Normally Open", "New Order", "None"] },
+                { q: "NC in electrical terms?", opts: ["Not Connected", "Normally Closed", "Next Circuit", "None"] },
+                { q: "Primary function of a Fuse?", opts: ["Increase Power", "Protect Circuit", "Change Voltage", "Store Energy"] },
+                { q: "What is a Relay?", opts: ["An Amplifier", "An Electrically Operated Switch", "A Battery", "A Motor"] },
+                { q: "Component that stores charge?", opts: ["Resistor", "Inductor", "Capacitor", "Diode"] }
+            ],
+            "Medical": [
+                { q: "What is the largest organ in the human body?", opts: ["Heart", "Liver", "Skin", "Brain"] },
+                { q: "Normal human body temperature is:", opts: ["35°C", "36°C", "37°C", "38°C"] },
+                { q: "Which organ pumps blood throughout the body?", opts: ["Brain", "Heart", "Lungs", "Kidney"] },
+                { q: "Which vitamin is produced when skin is exposed to sunlight?", opts: ["Vitamin A", "Vitamin B", "Vitamin C", "Vitamin D"] },
+                { q: "Which blood group is known as the universal donor?", opts: ["A", "B", "AB", "O negative"] },
+                { q: "What is the main function of red blood cells (RBCs)?", opts: ["Fight infection", "Carry oxygen", "Produce hormones", "Clot blood"] },
+                { q: "Which part of the brain controls balance and coordination?", opts: ["Cerebrum", "Cerebellum", "Medulla", "Hypothalamus"] },
+                { q: "Which organ filters blood and produces urine?", opts: ["Liver", "Kidney", "Lung", "Pancreas"] },
+                { q: "Insulin is produced by which organ?", opts: ["Liver", "Pancreas", "Heart", "Kidney"] },
+                { q: "Which disease is caused by deficiency of insulin?", opts: ["Hypertension", "Diabetes", "Asthma", "Tuberculosis"] },
+                { q: "What is the functional unit of the kidney?", opts: ["Neuron", "Nephron", "Alveoli", "Glomerulus"] },
+                { q: "Which component of blood helps in clotting?", opts: ["RBC", "WBC", "Platelets", "Plasma"] },
+                { q: "Which part of the cell contains genetic material?", opts: ["Cytoplasm", "Nucleus", "Ribosome", "Mitochondria"] },
+                { q: "Which gas is primarily responsible for respiration?", opts: ["Carbon dioxide", "Nitrogen", "Oxygen", "Hydrogen"] },
+                { q: "Which system controls hormones in the body?", opts: ["Nervous system", "Digestive system", "Endocrine system", "Respiratory system"] }
+            ],
+            "Commerce": [
+                { q: "What does GST stand for?", opts: ["General Sales Tax", "Goods and Services Tax", "Government Service Tax", "Gross Sales Tax"] },
+                { q: "What is profit?", opts: ["Total sales", "Income − Expenses", "Expenses − Income", "Assets − Liabilities"] },
+                { q: "Full form of RBI?", opts: ["Reserve Bank of India", "Regional Bank of India", "Rural Bank of India", "Reserve Bureau of India"] },
+                { q: "What is capital?", opts: ["Loss in business", "Money invested in business", "Profit earned", "Expenses incurred"] },
+                { q: "What is a budget?", opts: ["Financial plan", "Bank account", "Loan", "Tax"] },
+                { q: "What is the basic accounting equation?", opts: ["Assets = Liabilities − Capital", "Assets = Liabilities + Capital", "Capital = Assets + Liabilities", "Liabilities = Assets + Capital"] },
+                { q: "What is demand?", opts: ["Supply of goods", "Desire without money", "Desire backed by ability to pay", "Production of goods"] },
+                { q: "What is inflation?", opts: ["Decrease in prices", "Increase in production", "Rise in general price level", "Fall in demand"] },
+                { q: "What is a ledger?", opts: ["Book of original entry", "Book of accounts", "Cash book", "Trial balance"] },
+                { q: "Which sector deals with buying and selling of goods?", opts: ["Primary", "Secondary", "Tertiary", "Commercial"] },
+                { q: "What is break-even point?", opts: ["When profit is maximum", "When loss occurs", "When total revenue = total cost", "When sales decrease"] },
+                { q: "What is depreciation?", opts: ["Increase in asset value", "Decrease in asset value over time", "Profit earned", "Expense paid"] },
+                { q: "What is liquidity?", opts: ["Ability to earn profit", "Ability to pay long-term debts", "Ability to convert assets into cash", "Ability to produce goods"] },
+                { q: "Which document shows financial position of a business?", opts: ["Ledger", "Balance Sheet", "Journal", "Invoice"] },
+                { q: "What is working capital?", opts: ["Fixed assets", "Current assets − Current liabilities", "Total income", "Net profit"] }
+            ],
+            "Science": [
+                { q: "What is the chemical formula of water?", opts: ["CO2", "H2O", "O2", "H2"] },
+                { q: "What is the SI unit of mass?", opts: ["Gram", "Kilogram", "Pound", "Ton"] },
+                { q: "Which gas is essential for breathing?", opts: ["Carbon dioxide", "Oxygen", "Nitrogen", "Hydrogen"] },
+                { q: "What is the boiling point of water?", opts: ["0°C", "50°C", "100°C", "150°C"] },
+                { q: "Which planet is known as the Red Planet?", opts: ["Earth", "Mars", "Venus", "Jupiter"] },
+                { q: "What is the pH of a neutral solution?", opts: ["0", "7", "14", "1"] },
+                { q: "What force pulls objects toward the Earth?", opts: ["Magnetic force", "Friction", "Gravity", "Nuclear force"] },
+                { q: "Which part of the plant performs photosynthesis?", opts: ["Root", "Stem", "Leaf", "Flower"] },
+                { q: "What is the SI unit of electric current?", opts: ["Volt", "Watt", "Ampere", "Ohm"] },
+                { q: "What type of energy is stored in food?", opts: ["Mechanical energy", "Chemical energy", "Electrical energy", "Nuclear energy"] },
+                { q: "Which particle has a negative charge?", opts: ["Proton", "Neutron", "Electron", "Nucleus"] },
+                { q: "What is the speed of light?", opts: ["3 × 10^6 m/s", "3 × 10^8 m/s", "3 × 10^10 m/s", "3 × 10^5 m/s"] },
+                { q: "Which law states that every action has an equal and opposite reaction?", opts: ["Newton’s First Law", "Newton’s Second Law", "Newton’s Third Law", "Law of Gravity"] },
+                { q: "What is the unit of resistance?", opts: ["Volt", "Ampere", "Ohm", "Watt"] },
+                { q: "Which organelle is known as the “powerhouse of the cell”?", opts: ["Nucleus", "Ribosome", "Mitochondria", "Cytoplasm"] }
+            ],
+            "Law": [
+                { q: "What is the Constitution?", opts: ["A type of law book", "Supreme law of a country", "Court order", "Government policy"] },
+                { q: "Who makes laws in a country?", opts: ["Judiciary", "Legislature", "Police", "Citizens"] },
+                { q: "IPC stands for:", opts: ["Indian Police Code", "Indian Penal Code", "Internal Procedure Code", "Indian Public Code"] },
+                { q: "What is a contract?", opts: ["Verbal promise only", "Legal agreement", "Personal decision", "Government rule"] },
+                { q: "What is FIR?", opts: ["First Investigation Report", "First Information Report", "Final Investigation Record", "First Internal Record"] },
+                { q: "Which branch of government interprets laws?", opts: ["Executive", "Legislature", "Judiciary", "Police"] },
+                { q: "Right to Equality ensures:", opts: ["Freedom of speech", "Equal treatment before law", "Right to education", "Right to vote"] },
+                { q: "What is evidence in law?", opts: ["Opinion", "Proof presented in court", "Lawyer’s statement", "Judge’s decision"] },
+                { q: "Which court is the highest in India?", opts: ["High Court", "District Court", "Supreme Court", "Sessions Court"] },
+                { q: "What is a civil case related to?", opts: ["Criminal offense", "Personal disputes", "Murder cases", "Theft cases"] },
+                { q: "What is the principle of 'Rule of Law'?", opts: ["Law applies only to government", "Law applies equally to all", "Only courts follow law", "Only citizens follow law"] },
+                { q: "Which Article of the Indian Constitution guarantees Right to Equality?", opts: ["Article 14", "Article 19", "Article 21", "Article 32"] },
+                { q: "What is a writ?", opts: ["Written law", "Court order", "Police complaint", "Legal notice"] },
+                { q: "Who is the guardian of the Constitution in India?", opts: ["President", "Parliament", "Supreme Court", "Prime Minister"] },
+                { q: "What is 'habeas corpus'?", opts: ["Right to equality", "Produce the body before court", "Right to speech", "Legal agreement"] }
+            ]
+        };
+
+        window.onload = () => {
+            const storedData = JSON.parse(localStorage.getItem('last_test_results'));
+            if (!storedData) {
+                document.getElementById('performance-msg').innerText = "ERROR: NO_DATA_DETECTED";
+                return;
+            }
+
+            const { stream, answers, correctKeys } = storedData;
+            document.getElementById('stream-name').innerText = `${stream.toUpperCase()}_STREAM_SYNC_COMPLETE`;
+            
+            let score = 0;
+            const logContainer = document.getElementById('review-log');
+            const masterList = questionMaster[stream];
+
+            answers.forEach((ans, i) => {
+                const item = document.createElement('div');
+                let statusClass = "skipped";
+                let feedback = "NODE_SKIPPED";
+
+                if (ans !== null) {
+                    if (ans === correctKeys[i]) {
+                        score++;
+                        statusClass = "correct";
+                        feedback = "VALIDATED";
+                    } else {
+                        statusClass = "wrong";
+                        feedback = "MISMATCH";
+                    }
+                }
+
+                item.className = `review-item ${statusClass}`;
+                item.innerHTML = `
+                    <span class="q-text">${i + 1}. ${masterList[i].q}</span>
+                    <div class="ans-row">Input: <strong>${ans !== null ? masterList[i].opts[ans] : "NONE"}</strong></div>
+                    <div class="ans-row">Key: <span class="correct-ans">${masterList[i].opts[correctKeys[i]]}</span></div>
+                    <div style="font-size:10px; margin-top:5px; opacity:0.4; font-family:'Orbitron'">${feedback}</div>
+                `;
+                logContainer.appendChild(item);
+            });
+
+            document.getElementById('final-score').innerText = `${score}/15`;
+            const msg = document.getElementById('performance-msg');
+            if (score >= 12) msg.innerText = "PRIME_EFFICIENCY: High compatibility with this sector.";
+            else if (score >= 7) msg.innerText = "STANDARD_EFFICIENCY: Basic synchronization achieved.";
+            else msg.innerText = "LOW_EFFICIENCY: Core knowledge re-calibration required.";
+        };
+    </script>
+</body>
+</html>
